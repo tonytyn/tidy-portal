@@ -7,10 +7,10 @@ const router = createRouter({
     {
       path: '/',
       component: Layout,
-      redirect: '/menu',
+      redirect: '/system/menu',
       children: [
         {
-          path: 'menu',
+          path: 'system/menu',
           name: 'Menu',
           component: () => import('@/views/system/menu/index.vue')
         }

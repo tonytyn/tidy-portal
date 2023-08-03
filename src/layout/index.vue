@@ -10,7 +10,6 @@ import {
 } from '@ant-design/icons-vue'
 const selectedKeys = ref<string[]>(['1'])
 const collapsed = ref<boolean>(false)
-const items = reactive({ aaa: { key: '1', label: '应用列表', title: '嗯男' } })
 const handleMenuClick = () => {
   console.log(selectedKeys.value)
 }
@@ -38,13 +37,17 @@ const handleMenuClick = () => {
           <template #icon>
             <code-outlined />
           </template>
-          <a-menu-item key="2">我的应用 </a-menu-item>
+          <a-menu-item key="2">
+            <router-link to="/aaa">我的应用</router-link>
+          </a-menu-item>
         </a-sub-menu>
         <a-sub-menu key="sub3" title="系统管理">
           <template #icon>
             <setting-outlined />
           </template>
-          <a-menu-item key="3"> 菜单管理</a-menu-item>
+          <a-menu-item key="3">
+            <router-link to="/system/menu">菜单管理</router-link>
+          </a-menu-item>
         </a-sub-menu>
       </a-menu>
     </a-layout-sider>
