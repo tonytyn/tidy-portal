@@ -2,17 +2,19 @@
 import { ref } from 'vue'
 import { RouterView, useRouter } from 'vue-router'
 
-import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined
-} from '@ant-design/icons-vue'
+import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons-vue'
 
 const selectedKeys = ref<string[]>(['1'])
 const collapsed = ref<boolean>(false)
 
 const router = useRouter()
-
 const menuList = router.getRoutes().find((route) => route.name === 'Main')?.children
+const paneList = ref([{key:"1",tab:"选项卡1"},{key:"2",tab:"选项卡2"},{key:"3",tab:"3"},{key:"4",tab:"选项卡4"}])
+const activeKey = ref(paneList.value[0].key)
+const handleTabEdit = (targetKey: string | MouseEvent) => {
+  console.log(targetKey)
+  paneList.value = paneList.value.filter(pane=>pane.key !== targetKey)
+}
 </script>
 <template>
   <a-layout>
@@ -24,7 +26,7 @@ const menuList = router.getRoutes().find((route) => route.name === 'Main')?.chil
       <a-menu v-model:selectedKeys="selectedKeys" theme="dark" mode="inline">
         <a-sub-menu v-for="menu in menuList" :key="menu.name" :title="menu.meta?.title">
           <template #icon>
-            <component :is="menu.meta?.icon"/>
+            <component :is="menu.meta?.icon" />
           </template>
           <a-menu-item v-for="page in menu.children" :key="page.name">
             <router-link :to="page.path">{{ page.meta?.title }}</router-link>
@@ -53,7 +55,15 @@ const menuList = router.getRoutes().find((route) => route.name === 'Main')?.chil
         </a-row>
       </a-layout-header>
       <a-layout-content>
-        <RouterView />
+        <a-tabs type="editable-card" v-model:activeKey="activeKey" hideAdd @edit="handleTabEdit">
+          <a-tab-pane  v-for="item in paneList" :key="item.key" :tab="item.tab"> </a-tab-pane>
+          
+        </a-tabs>
+        <router-view v-slot="{ Component }">
+          <keep-alive>
+            <component :is="Component" />
+          </keep-alive>
+        </router-view>
       </a-layout-content>
     </a-layout>
   </a-layout>
