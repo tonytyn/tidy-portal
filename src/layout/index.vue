@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
-import { RouterView } from 'vue-router'
+import { ref } from 'vue'
+import { RouterView, useRouter } from 'vue-router'
+
 import {
   MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  AppstoreAddOutlined,
-  CodeOutlined,
-  SettingOutlined
+  MenuUnfoldOutlined
 } from '@ant-design/icons-vue'
+
 const selectedKeys = ref<string[]>(['1'])
 const collapsed = ref<boolean>(false)
-const handleMenuClick = () => {
-  console.log(selectedKeys.value)
-}
+
+const router = useRouter()
+
+const menuList = router.getRoutes().find((route) => route.name === 'Main')?.children
 </script>
 <template>
   <a-layout>
@@ -21,32 +21,13 @@ const handleMenuClick = () => {
         <img src="/src/assets/logo.png" style="height: 100%" />
         <span :class="collapsed ? 'title-hidden' : 'title-show'">tidy-portal</span>
       </div>
-      <a-menu
-        v-model:selectedKeys="selectedKeys"
-        theme="dark"
-        mode="inline"
-        @click="handleMenuClick"
-      >
-        <a-sub-menu key="sub1" title="应用中心">
+      <a-menu v-model:selectedKeys="selectedKeys" theme="dark" mode="inline">
+        <a-sub-menu v-for="menu in menuList" :key="menu.name" :title="menu.meta?.title">
           <template #icon>
-            <appstore-add-outlined />
+            <component :is="menu.meta?.icon"/>
           </template>
-          <a-menu-item key="1">应用列表</a-menu-item>
-        </a-sub-menu>
-        <a-sub-menu key="sub2" title="开发者中心">
-          <template #icon>
-            <code-outlined />
-          </template>
-          <a-menu-item key="2">
-            <router-link to="/aaa">我的应用</router-link>
-          </a-menu-item>
-        </a-sub-menu>
-        <a-sub-menu key="sub3" title="系统管理">
-          <template #icon>
-            <setting-outlined />
-          </template>
-          <a-menu-item key="3">
-            <router-link to="/system/menu">菜单管理</router-link>
+          <a-menu-item v-for="page in menu.children" :key="page.name">
+            <router-link :to="page.path">{{ page.meta?.title }}</router-link>
           </a-menu-item>
         </a-sub-menu>
       </a-menu>
