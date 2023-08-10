@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { RouterView, useRouter } from 'vue-router'
+import { RouterView, useRouter, type RouteRecordRaw } from 'vue-router'
 
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons-vue'
 
@@ -9,11 +9,20 @@ const collapsed = ref<boolean>(false)
 
 const router = useRouter()
 const menuList = router.getRoutes().find((route) => route.name === 'Main')?.children
-const paneList = ref([{key:"1",tab:"选项卡1"},{key:"2",tab:"选项卡2"},{key:"3",tab:"3"},{key:"4",tab:"选项卡4"}])
-const activeKey = ref(paneList.value[0].key)
+const paneList = ref<string[]>([])
+const activeKey = ref()
 const handleTabEdit = (targetKey: string | MouseEvent) => {
-  console.log(targetKey)
-  paneList.value = paneList.value.filter(pane=>pane.key !== targetKey)
+  paneList.value = paneList.value.filter((pane) => pane !== targetKey)
+}
+const handlePageChange = (route: RouteRecordRaw) => {
+  activeKey.value = route.meta?.title as string
+  if(!paneList.value.includes(route.meta?.title as string)){
+    paneList.value.push(route.meta?.title as string)
+  }
+}
+const handleTabChange = (activeKey: string)=>{
+  console.log(activeKey);
+  
 }
 </script>
 <template>
@@ -29,7 +38,9 @@ const handleTabEdit = (targetKey: string | MouseEvent) => {
             <component :is="menu.meta?.icon" />
           </template>
           <a-menu-item v-for="page in menu.children" :key="page.name">
-            <router-link :to="page.path">{{ page.meta?.title }}</router-link>
+            <router-link :to="page.path" @click="handlePageChange(page)">{{
+              page.meta?.title
+            }}</router-link>
           </a-menu-item>
         </a-sub-menu>
       </a-menu>
@@ -55,11 +66,10 @@ const handleTabEdit = (targetKey: string | MouseEvent) => {
         </a-row>
       </a-layout-header>
       <a-layout-content>
-        <a-tabs type="editable-card" v-model:activeKey="activeKey" hideAdd @edit="handleTabEdit">
-          <a-tab-pane  v-for="item in paneList" :key="item.key" :tab="item.tab"> </a-tab-pane>
-          
+        <a-tabs type="editable-card" v-model:activeKey="activeKey" hideAdd @edit="handleTabEdit" @change="handleTabChange">
+          <a-tab-pane v-for="pane in paneList" :key="pane" :tab="pane"> </a-tab-pane>
         </a-tabs>
-        <router-view v-slot="{ Component }">
+        <router-view v-if="activeKey" v-slot="{ Component }">
           <keep-alive>
             <component :is="Component" />
           </keep-alive>

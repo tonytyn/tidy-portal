@@ -7,11 +7,9 @@ import {
 } from '@ant-design/icons-vue'
 
 import Layout from '@/layout/index.vue'
-
 /**
- * 关于路由结构的一些思考：模块-页面-按钮是非常经典的三层结构，对于一个系统来说，层级越少用户的学习成本越低。
- * 能够让用户一看到名字就知道这个功能是干什么的，是最好的设计。可能有些时候三层并不能很好的去组织页面结构，
- * 但是我们要尽量向着三层去努力，如果三层不能体现系统的全部功能，请仔细想一想，你努力去设计了吗？
+ * 路由名称必不可少，且不可重复。在很多地方都需要通过路由名称去加载对应的组件，比如动态标签页的切换和keep-alive中组件的缓存
+ * 
  */
 
 const router = createRouter({
@@ -19,7 +17,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'Main', // 路由名称不应该出现重复，尤其是这个主路由
+      name: 'Main',
       component: Layout,
       redirect: '/app-center/list',
       children: [
