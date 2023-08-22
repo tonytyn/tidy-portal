@@ -4,25 +4,30 @@ import { RouterView, useRouter, type RouteRecordRaw } from 'vue-router'
 
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons-vue'
 
-const selectedKeys = ref<string[]>(['1'])
+const selectedKeys = ref<string[]>([])
 const collapsed = ref<boolean>(false)
 
 const router = useRouter()
 const menuList = router.getRoutes().find((route) => route.name === 'Main')?.children
 const paneList = ref<string[]>([])
 const activeKey = ref()
-const handleTabEdit = (targetKey: string | MouseEvent) => {
+// 关闭tab标签
+const handleTabClose = (targetKey: string | MouseEvent) => {
   paneList.value = paneList.value.filter((pane) => pane !== targetKey)
 }
+// tab菜单栏页面切换
 const handlePageChange = (route: RouteRecordRaw) => {
-  activeKey.value = route.meta?.title as string
-  if(!paneList.value.includes(route.meta?.title as string)){
-    paneList.value.push(route.meta?.title as string)
+  activeKey.value = route.name as string
+  if (!paneList.value.includes(route.name as string)) {
+    paneList.value.push(route.name as string)
   }
 }
-const handleTabChange = (activeKey: string)=>{
-  console.log(activeKey);
-  
+// tab标签切换
+const handleTabChange = (activeKey: string) => {
+  selectedKeys.value = []
+  selectedKeys.value.push( activeKey)
+  const route = router.getRoutes().find((route) => route.name === activeKey)
+  router.push(route?.path as string)
 }
 </script>
 <template>
@@ -38,9 +43,9 @@ const handleTabChange = (activeKey: string)=>{
             <component :is="menu.meta?.icon" />
           </template>
           <a-menu-item v-for="page in menu.children" :key="page.name">
-            <router-link :to="page.path" @click="handlePageChange(page)">{{
-              page.meta?.title
-            }}</router-link>
+            <router-link :to="page.path" @click="handlePageChange(page)">
+              {{ page.meta?.title }}
+            </router-link>
           </a-menu-item>
         </a-sub-menu>
       </a-menu>
@@ -66,7 +71,13 @@ const handleTabChange = (activeKey: string)=>{
         </a-row>
       </a-layout-header>
       <a-layout-content>
-        <a-tabs type="editable-card" v-model:activeKey="activeKey" hideAdd @edit="handleTabEdit" @change="handleTabChange">
+        <a-tabs
+          type="editable-card"
+          v-model:activeKey="activeKey"
+          hideAdd
+          @edit="handleTabClose"
+          @change="handleTabChange"
+        >
           <a-tab-pane v-for="pane in paneList" :key="pane" :tab="pane"> </a-tab-pane>
         </a-tabs>
         <router-view v-if="activeKey" v-slot="{ Component }">
@@ -80,14 +91,6 @@ const handleTabChange = (activeKey: string)=>{
 </template>
 
 <style lang="less" scoped>
-.collapse-trigger {
-  cursor: pointer;
-  transition: color 0.3s;
-}
-
-.collapse-trigger:hover {
-  color: #1890ff;
-}
 .title-show {
   color: aliceblue;
   font-size: larger;
@@ -96,13 +99,19 @@ const handleTabChange = (activeKey: string)=>{
   transition: visibility;
   transition-delay: 0.2s;
 }
-
-.title-hidden {
-  visibility: hidden;
-}
-
 .logo-container {
   height: 64px;
   padding: 5px;
+}
+.title-hidden {
+  visibility: hidden;
+}
+.collapse-trigger {
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.collapse-trigger:hover {
+  color: #1890ff;
 }
 </style>
