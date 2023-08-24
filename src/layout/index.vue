@@ -4,30 +4,47 @@ import { RouterView, useRouter, type RouteRecordRaw } from 'vue-router'
 
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons-vue'
 
-const selectedKeys = ref<string[]>([])
+const selectedPages = ref<string[]>([])
 const collapsed = ref<boolean>(false)
 
 const router = useRouter()
 const menuList = router.getRoutes().find((route) => route.name === 'Main')?.children
-const paneList = ref<string[]>([])
-const activeKey = ref()
+const paneList = ref<RouteRecordRaw[]>([])
+const sortedPaneList = ref<string[]>([])
+const activePane = ref<string>('')
+
+
 // 关闭tab标签
 const handleTabClose = (targetKey: string | MouseEvent) => {
-  paneList.value = paneList.value.filter((pane) => pane !== targetKey)
+  paneList.value = paneList.value.filter((pane) => pane.name !== targetKey)
+  sortedPaneList.value = sortedPaneList.value.filter((pane) => pane !== targetKey)
+  if(activePane.value === targetKey){
+    activePane.value = sortedPaneList.value[paneList.value.length-1]
+  }
 }
 // tab菜单栏页面切换
 const handlePageChange = (route: RouteRecordRaw) => {
-  activeKey.value = route.name as string
-  if (!paneList.value.includes(route.name as string)) {
-    paneList.value.push(route.name as string)
+  if (!paneList.value.find((r) => r.name === route.name)) {
+    paneList.value.push(route)
+    sortedPaneList.value.push(route.name as string)
   }
+  activePane.value = route.name as string
 }
 // tab标签切换
 const handleTabChange = (activeKey: string) => {
-  selectedKeys.value = []
-  selectedKeys.value.push( activeKey)
-  const route = router.getRoutes().find((route) => route.name === activeKey)
-  router.push(route?.path as string)
+  selectedPages.value = []
+  selectedPages.value.push(activeKey)
+
+  const path = router.getRoutes().find((route) => route.name === activeKey)?.path as string
+  router.push(path)
+  for (let i = 0; i < sortedPaneList.value.length; i++) {
+    if(sortedPaneList.value[i] === activeKey){
+      sortedPaneList.value.splice(i,1)
+      break;
+    }
+  }
+  sortedPaneList.value.push(activeKey)
+  activePane.value = activeKey
 }
 </script>
 <template>
@@ -37,7 +54,7 @@ const handleTabChange = (activeKey: string) => {
         <img src="/src/assets/logo.png" style="height: 100%" />
         <span :class="collapsed ? 'title-hidden' : 'title-show'">tidy-portal</span>
       </div>
-      <a-menu v-model:selectedKeys="selectedKeys" theme="dark" mode="inline">
+      <a-menu v-model:selectedKeys="selectedPages" theme="dark" mode="inline">
         <a-sub-menu v-for="menu in menuList" :key="menu.name" :title="menu.meta?.title">
           <template #icon>
             <component :is="menu.meta?.icon" />
@@ -73,14 +90,15 @@ const handleTabChange = (activeKey: string) => {
       <a-layout-content>
         <a-tabs
           type="editable-card"
-          v-model:activeKey="activeKey"
+          v-model:activeKey="activePane"
           hideAdd
           @edit="handleTabClose"
           @change="handleTabChange"
         >
-          <a-tab-pane v-for="pane in paneList" :key="pane" :tab="pane"> </a-tab-pane>
+          <a-tab-pane v-for="pane in paneList" :key="pane.name" :tab="pane.meta?.title">
+          </a-tab-pane>
         </a-tabs>
-        <router-view v-if="activeKey" v-slot="{ Component }">
+        <router-view v-if="activePane" v-slot="{ Component }">
           <keep-alive>
             <component :is="Component" />
           </keep-alive>

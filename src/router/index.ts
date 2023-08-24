@@ -9,7 +9,7 @@ import {
 import Layout from '@/layout/index.vue'
 /**
  * 路由名称必不可少，且不可重复。在很多地方都需要通过路由名称去加载对应的组件，比如动态标签页的切换和keep-alive中组件的缓存
- * 
+ * 组件名称需要跟路由名称一致，这样才能在keep-alive中缓存
  */
 
 const router = createRouter({
@@ -19,7 +19,7 @@ const router = createRouter({
       path: '/',
       name: 'Main',
       component: Layout,
-      redirect: '/app-center/list',
+      // redirect: '/app-center/list',
       children: [
         {
           path: 'app-center',
