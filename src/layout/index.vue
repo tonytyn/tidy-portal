@@ -1,3 +1,9 @@
+<!-- 使用额外的标签定义组件name需要跟router中配置的name一致 -->
+<script lang="ts">
+export default {
+  name: 'Layout'
+}
+</script>
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterView, useRouter, type RouteRecordRaw } from 'vue-router'
@@ -10,23 +16,14 @@ const collapsed = ref<boolean>(false)
 const router = useRouter()
 const menuList = router.getRoutes().find((route) => route.name === 'Main')?.children
 const paneList = ref<RouteRecordRaw[]>([])
-const sortedPaneList = ref<string[]>([])
+const orderedPaneList = ref<string[]>([])
 const activePane = ref<string>('')
 
-
-// 关闭tab标签
-const handleTabClose = (targetKey: string | MouseEvent) => {
-  paneList.value = paneList.value.filter((pane) => pane.name !== targetKey)
-  sortedPaneList.value = sortedPaneList.value.filter((pane) => pane !== targetKey)
-  if(activePane.value === targetKey){
-    activePane.value = sortedPaneList.value[paneList.value.length-1]
-  }
-}
-// tab菜单栏页面切换
+// 点击左侧菜单栏中的页面
 const handlePageChange = (route: RouteRecordRaw) => {
   if (!paneList.value.find((r) => r.name === route.name)) {
     paneList.value.push(route)
-    sortedPaneList.value.push(route.name as string)
+    orderedPaneList.value.push(route.name as string)
   }
   activePane.value = route.name as string
 }
@@ -35,18 +32,30 @@ const handleTabChange = (activeKey: string) => {
   selectedPages.value = []
   selectedPages.value.push(activeKey)
 
-  const path = router.getRoutes().find((route) => route.name === activeKey)?.path as string
-  router.push(path)
-  for (let i = 0; i < sortedPaneList.value.length; i++) {
-    if(sortedPaneList.value[i] === activeKey){
-      sortedPaneList.value.splice(i,1)
-      break;
-    }
-  }
-  sortedPaneList.value.push(activeKey)
+  const route = router.getRoutes().find((route) => route.name === activeKey)
+  router.push(route?.path as string)
+  orderedPaneList.value = orderedPaneList.value.filter((pane) => pane !== activeKey)
+  orderedPaneList.value.push(activeKey)
   activePane.value = activeKey
 }
+// 关闭tab标签
+const handleTabClose = (targetKey: string | MouseEvent) => {
+  paneList.value = paneList.value.filter((pane) => pane.name !== targetKey)
+  orderedPaneList.value = orderedPaneList.value.filter((pane) => pane !== targetKey)
+  if (activePane.value === targetKey) {
+    if (orderedPaneList.value.length > 0) {
+      activePane.value = orderedPaneList.value[paneList.value.length - 1]
+      const route = router.getRoutes().find((route) => route.name === activePane.value)
+      router.push(route?.path as string)
+    } else {
+      activePane.value = ''
+      const route = router.getRoutes().find((route) => route.name === 'Main')
+      router.push(route?.path as string)
+    }
+  }
+}
 </script>
+
 <template>
   <a-layout>
     <a-layout-sider v-model:collapsed="collapsed" :trigger="null" collapsible>
@@ -98,16 +107,17 @@ const handleTabChange = (activeKey: string) => {
           <a-tab-pane v-for="pane in paneList" :key="pane.name" :tab="pane.meta?.title">
           </a-tab-pane>
         </a-tabs>
-        <router-view v-if="activePane" v-slot="{ Component }">
-          <keep-alive>
-            <component :is="Component" />
-          </keep-alive>
-        </router-view>
+        <div class="pane-content">
+          <router-view v-if="activePane" v-slot="{ Component }">
+            <keep-alive :include="orderedPaneList">
+              <component :is="Component" />
+            </keep-alive>
+          </router-view>
+        </div>
       </a-layout-content>
     </a-layout>
   </a-layout>
 </template>
-
 <style lang="less" scoped>
 .title-show {
   color: aliceblue;
@@ -131,5 +141,8 @@ const handleTabChange = (activeKey: string) => {
 
 .collapse-trigger:hover {
   color: #1890ff;
+}
+.pane-content {
+  padding: 10px;
 }
 </style>
