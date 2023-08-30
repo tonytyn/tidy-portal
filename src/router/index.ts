@@ -43,7 +43,7 @@ const router = createRouter({
             {
               path: '/developer-center/my',
               name: 'MyApp',
-              meta: { title:'我的应用',icon: '345' },
+              meta: { title:'应用管理',icon: '345' },
               component: () => import('@/views/developer-center/index.vue')
             },
             
