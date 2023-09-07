@@ -7,7 +7,17 @@ export default {
 <script lang="ts" setup>
 import { h, ref } from 'vue'
 import { SearchOutlined, ReloadOutlined, UserAddOutlined } from '@ant-design/icons-vue'
-const queryParam = ref({ username: '' })
+import type { UserListResult } from '@/api/user/models'
+import { searchUserListApi } from '@/api/user'
+
+const userList = ref<UserListResult[]>([])
+
+const searchUser = async () => {
+  const { data: res } = await searchUserListApi(searchParam.value.username)
+  console.log(res)
+  userList.value = res?.list
+}
+const searchParam = ref({ username: '' })
 const pageNum = ref<number>(1)
 const pageSize = ref<number>(10)
 const total = ref<number>(12)
@@ -16,102 +26,46 @@ const handlePageChange = (page: number, size: number) => {
   console.log(page, '查询数据，更新table数据', size)
 }
 
-const userList = ref([
-  {
-    key: '1',
-    name: 'John Brown',
-    money: '￥300,000.00',
-    address: 'New York No. 1 Lake Park'
-  },
-  {
-    key: '2',
-    name: 'Jim Green',
-    money: '￥1,256,000.00',
-    address: 'London No. 1 Lake Park'
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    money: '￥120,000.00',
-    address: 'Sidney No. 1 Lake Park'
-  },
-  {
-    key: '4',
-    name: 'John Brown',
-    money: '￥300,000.00',
-    address: 'New York No. 1 Lake Park'
-  },
-  {
-    key: '5',
-    name: 'Jim Green',
-    money: '￥1,256,000.00',
-    address: 'London No. 1 Lake Park'
-  },
-  {
-    key: '6',
-    name: 'Joe Black',
-    money: '￥120,000.00',
-    address: 'Sidney No. 1 Lake Park'
-  },
-  {
-    key: '7',
-    name: 'John Brown',
-    money: '￥300,000.00',
-    address: 'New York No. 1 Lake Park'
-  },
-  {
-    key: '8',
-    name: 'Jim Green',
-    money: '￥1,256,000.00',
-    address: 'London No. 1 Lake Park'
-  },
-  {
-    key: '9',
-    name: 'Joe Black',
-    money: '￥120,000.00',
-    address: 'Sidney No. 1 Lake Park'
-  },
-  {
-    key: '10',
-    name: 'John Brown',
-    money: '￥300,000.00',
-    address: 'New York No. 1 Lake Park'
-  },
-  {
-    key: '11',
-    name: 'Jim Green',
-    money: '￥1,256,000.00',
-    address: 'London No. 1 Lake Park'
-  },
-  {
-    key: '12',
-    name: 'Joe Black',
-    money: '￥120,000.00',
-    address: 'Sidney No. 1 Lake Park'
-  }
-])
 const columns = ref([
   {
+    key: 'index',
     title: '序号',
-    dataIndex: 'name'
+    width: 80,
+    align: 'center'
   },
   {
     title: '用户名',
-    dataIndex: 'money'
+    dataIndex: 'username',
+    align: 'center'
   },
   {
     title: '账号',
-    dataIndex: 'address'
+    dataIndex: 'account',
+    align: 'center'
+  },
+  {
+    title: '状态',
+    dataIndex: 'state',
+    align: 'center'
+  },
+  {
+    key: 'operation',
+    title: '操作',
+    align: 'center'
   }
 ])
+
+const openDetail = (userId: number) => {
+  console.log(userId)
+}
 </script>
 <template>
-  <a-form layout="inline" :model="queryParam">
+  <a-form layout="inline" :model="searchParam">
     <a-form-item label="用户名">
-      <a-input v-model:value="queryParam.username"> </a-input>
+      <a-input v-model:value="searchParam.username"> </a-input>
     </a-form-item>
     <a-form-item>
-      <a-button type="primary" :icon="h(SearchOutlined)"> 查询 </a-button>
+      <a-button type="primary" :icon="h(SearchOutlined)" @click="searchUser"> 查询 </a-button>
     </a-form-item>
     <a-form-item>
       <a-button :icon="h(ReloadOutlined)"> 重置 </a-button>
@@ -121,7 +75,18 @@ const columns = ref([
     </a-form-item>
   </a-form>
   <a-divider></a-divider>
-  <a-table :columns="columns" :data-source="userList" :pagination="false" bordered> </a-table>
+  <a-table :columns="columns" :data-source="userList" :pagination="false" rowKey="id" bordered>
+    <template #bodyCell="{ index, record, column }">
+      <template v-if="column.key === 'index'">
+        {{ index + 1 }}
+      </template>
+      <template v-if="column.key === 'operation'">
+        <a-space>
+          <a-button type="primary" size="small" @click="openDetail(record.id)">详情</a-button>
+        </a-space>
+      </template>
+    </template>
+  </a-table>
   <a-pagination
     v-model:current="pageNum"
     v-model:page-size="pageSize"
@@ -130,7 +95,7 @@ const columns = ref([
     show-size-changer
     @change="handlePageChange"
     class="pagination"
-    >
+  >
   </a-pagination>
 </template>
 
