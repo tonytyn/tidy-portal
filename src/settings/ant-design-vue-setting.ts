@@ -14,7 +14,9 @@ import {
   Divider,
   Form,
   Pagination,
-  ConfigProvider
+  ConfigProvider,
+  Space
+
 } from 'ant-design-vue'
 
 export const setupAntDesignVue = (app: App<Element>): void => {
@@ -33,6 +35,8 @@ export const setupAntDesignVue = (app: App<Element>): void => {
   app.use(Form)
   app.use(Pagination)
   app.use(ConfigProvider)
+  app.use(Space)
+
 
   app.config.globalProperties.$message = message
 }
