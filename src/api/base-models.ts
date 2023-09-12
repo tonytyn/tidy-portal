@@ -15,8 +15,6 @@ export interface ResopnseResult<T> {
 }
 
 export interface PageResult<T> {
-  pageUnm: number
-  pageSize: number
   total: number
   list: T[]
 }

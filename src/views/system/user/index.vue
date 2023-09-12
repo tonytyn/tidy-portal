@@ -13,14 +13,15 @@ import { searchUserListApi } from '@/api/user'
 const userList = ref<UserListResult[]>([])
 
 const searchUser = async () => {
-  const { data: res } = await searchUserListApi(searchParam.value.username)
-  console.log(res)
-  userList.value = res?.list
+  const {data:res} = await searchUserListApi(searchParam.value.username,pageNum.value,pageSize.value)
+  userList.value = res.data.list
+  total.value = res.data.total
 }
+
 const searchParam = ref({ username: '' })
 const pageNum = ref<number>(1)
 const pageSize = ref<number>(10)
-const total = ref<number>(12)
+const total = ref<number>(0)
 const showTotal = () => `共 ${total.value} 条`
 const handlePageChange = (page: number, size: number) => {
   console.log(page, '查询数据，更新table数据', size)
@@ -58,6 +59,7 @@ const columns = ref([
 const openDetail = (userId: number) => {
   console.log(userId)
 }
+searchUser()
 </script>
 <template>
   <a-form layout="inline" :model="searchParam">
