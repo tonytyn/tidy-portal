@@ -45,6 +45,7 @@ const columns = ref([
     align: 'center'
   },
   {
+    key: 'state',
     title: '状态',
     dataIndex: 'state',
     align: 'center'
@@ -82,9 +83,13 @@ searchUser()
       <template v-if="column.key === 'index'">
         {{ index + 1 }}
       </template>
+      <template v-if="column.key === 'state'">
+        <a-tag :color="record.state==='启用'?'success':'error'">{{record.state}}</a-tag>
+      </template>
       <template v-if="column.key === 'operation'">
         <a-space>
           <a-button type="primary" size="small" @click="openDetail(record.id)">详情</a-button>
+          <a-button type="primary" size="small" @click="openDetail(record.id)">编辑</a-button>
         </a-space>
       </template>
     </template>
