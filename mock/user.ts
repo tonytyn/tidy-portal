@@ -5,61 +5,71 @@ const userList = [
     id: 1,
     username: '张三',
     account: 'abc123...',
-    state: '启用'
+    state: '启用',
+    createdAt: '2023-08-18'
   },
   {
     id: 2,
     username: '李四',
     account: 'abc123...',
-    state: '启用'
+    state: '启用',
+    createdAt: '2013-08-18'
   },
   {
     id: 3,
     username: '王五',
     account: 'abc123...',
-    state: '启用'
+    state: '启用',
+    createdAt: '2013-07-08'
   },
   {
     id: 4,
     username: '赵六',
     account: 'abc123...',
-    state: '启用'
+    state: '启用',
+    createdAt: '2013-12-18'
   },
   {
     id: 5,
     username: '孙七',
     account: 'abc123...',
-    state: '启用'
+    state: '启用',
+    createdAt: '2023-06-18'
   },
   {
     id: 6,
     username: '周八',
     account: 'abc123...',
-    state: '停用'
+    state: '停用',
+    createdAt: '2023-08-22'
   },
   {
     id: 7,
     username: 'Tony',
     account: 'abc123...',
-    state: '启用'
+    state: '启用',
+    createdAt: '2023-08-03'
   },
   {
     id: 8,
     username: 'Miss',
     account: 'abc123...',
-    state: '停用'
+    state: '停用',
+    createdAt: '2023-08-08'
   },
   {
     id: 9,
     username: '王小二',
     account: 'abc123...',
-    state: '启用'
+    state: '启用',
+    createdAt: '2023-01-18'
   },
   {
     id: 10,
     username: '张先生',
     account: 'abc123...',
-    state: '启用'
+    state: '启用',
+    createdAt: '2023-08-12'
   }
 ]
 export default [
