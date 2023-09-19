@@ -16,7 +16,8 @@ import {
   Pagination,
   ConfigProvider,
   Space,
-  Tag
+  Tag,
+  Modal
 
 } from 'ant-design-vue'
 
@@ -38,6 +39,7 @@ export const setupAntDesignVue = (app: App<Element>): void => {
   app.use(ConfigProvider)
   app.use(Space)
   app.use(Tag)
+  app.use(Modal)
 
 
   app.config.globalProperties.$message = message

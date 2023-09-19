@@ -58,7 +58,7 @@ const handleTabClose = (targetKey: string | MouseEvent) => {
 
 <template>
   <a-layout>
-    <a-layout-sider v-model:collapsed="collapsed" :trigger="null" collapsible style="height: auto;">
+    <a-layout-sider v-model:collapsed="collapsed" :trigger="null" collapsible style="height: auto">
       <div class="logo-container">
         <img src="/src/assets/logo.png" style="height: 100%" />
         <span :class="collapsed ? 'title-hidden' : 'title-show'">tidy-portal</span>

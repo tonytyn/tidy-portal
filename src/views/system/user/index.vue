@@ -9,11 +9,16 @@ import { h, ref } from 'vue'
 import { SearchOutlined, ReloadOutlined, UserAddOutlined } from '@ant-design/icons-vue'
 import type { UserListResult } from '@/api/user/models'
 import { searchUserListApi } from '@/api/user'
+import CreateUser from "./components/CreateUser.vue";
 
 const userList = ref<UserListResult[]>([])
 
 const searchUser = async () => {
-  const {data:res} = await searchUserListApi(searchParam.value.username,pageNum.value,pageSize.value)
+  const { data: res } = await searchUserListApi(
+    searchParam.value.username,
+    pageNum.value,
+    pageSize.value
+  )
   userList.value = res.data.list
   total.value = res.data.total
 }
@@ -26,8 +31,14 @@ const showTotal = () => `共 ${total.value} 条`
 const handlePageChange = (page: number, size: number) => {
   console.log(page, '查询数据，更新table数据', size)
 }
-
-const columns = ref([
+const modalVisible = ref(false)
+const openCreateModal = ()=>{
+  modalVisible.value = true
+}
+const handleModalClose = ()=>{
+  modalVisible.value = false
+}
+const columns = [
   {
     key: 'index',
     title: '序号',
@@ -51,11 +62,17 @@ const columns = ref([
     align: 'center'
   },
   {
+    key: 'createdAt',
+    title: '创建日期',
+    dataIndex: 'createdAt',
+    align: 'center'
+  },
+  {
     key: 'operation',
     title: '操作',
     align: 'center'
   }
-])
+]
 
 const openDetail = (userId: number) => {
   console.log(userId)
@@ -74,7 +91,7 @@ searchUser()
       <a-button :icon="h(ReloadOutlined)"> 重置 </a-button>
     </a-form-item>
     <a-form-item>
-      <a-button :icon="h(UserAddOutlined)"> 创建 </a-button>
+      <a-button :icon="h(UserAddOutlined)" @click="openCreateModal"> 创建 </a-button>
     </a-form-item>
   </a-form>
   <a-divider></a-divider>
@@ -84,12 +101,13 @@ searchUser()
         {{ index + 1 }}
       </template>
       <template v-if="column.key === 'state'">
-        <a-tag :color="record.state==='启用'?'success':'error'">{{record.state}}</a-tag>
+        <a-tag :color="record.state === '启用' ? 'success' : 'error'">{{ record.state }}</a-tag>
       </template>
       <template v-if="column.key === 'operation'">
         <a-space>
           <a-button type="primary" size="small" @click="openDetail(record.id)">详情</a-button>
           <a-button type="primary" size="small" @click="openDetail(record.id)">编辑</a-button>
+          <a-button type="primary" size="small" @click="openDetail(record.id)">删除</a-button>
         </a-space>
       </template>
     </template>
@@ -104,6 +122,7 @@ searchUser()
     class="pagination"
   >
   </a-pagination>
+  <CreateUser :modalVisible = modalVisible @modalClose="handleModalClose"></CreateUser>
 </template>
 
 <style lang="less" scoped>
