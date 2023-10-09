@@ -10,7 +10,6 @@ import {
   Table,
   Button,
   Input,
-  message,
   Divider,
   Form,
   Pagination,
@@ -42,5 +41,4 @@ export const setupAntDesignVue = (app: App<Element>): void => {
   app.use(Modal)
 
 
-  app.config.globalProperties.$message = message
 }
