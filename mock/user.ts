@@ -87,5 +87,24 @@ export default [
         }
       }
     }
+  },
+  {
+    url: '/base/user/create',
+    method: 'post',
+    response: ({body}) => {
+      const exist = userList.some(user=>user.account === body.account)
+      if(exist){
+        return {
+          code: 400,
+          msg: '账号已存在',
+          data: null
+        }
+      }
+      return {
+        code: 0,
+        msg: '创建成功（演示模式请勿当真）',
+        data: null
+      }
+    }
   }
 ] as MockMethod[]

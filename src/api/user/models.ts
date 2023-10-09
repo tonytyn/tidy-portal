@@ -6,10 +6,10 @@ export interface UserListResult {
   state: string
 }
 export interface CreateUserParam {
-  parentId?: number
-  menuName: string
-  menuCode: string
-  menuType: string
+  username: string
+  account: string
+  password: string
+  phone: string
 }
 
 export interface UpdateUserParam {
