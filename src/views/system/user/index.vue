@@ -6,36 +6,39 @@ export default {
 </script>
 <script lang="ts" setup>
 import { h, ref } from 'vue'
+// import { message } from 'ant-design-vue'
+
 import { SearchOutlined, ReloadOutlined, UserAddOutlined } from '@ant-design/icons-vue'
-import type { UserListResult } from '@/api/user/models'
+import type { SearchUserParam, UserListResult } from '@/api/user/models'
 import { searchUserListApi } from '@/api/user'
-import CreateUser from "./components/CreateUser.vue";
+import CreateUser from './components/CreateUser.vue'
+
+const searchUserParam = ref<SearchUserParam>({ username: '', pageNum: 1, pageSize: 10 })
 
 const userList = ref<UserListResult[]>([])
 
 const searchUser = async () => {
-  const { data: res } = await searchUserListApi(
-    searchParam.value.username,
-    pageNum.value,
-    pageSize.value
-  )
+  const { data: res } = await searchUserListApi(searchUserParam.value)
   userList.value = res.data.list
   total.value = res.data.total
 }
+const reset = ()=>{
+  searchUserParam.value.username = ''
+  searchUserParam.value.pageNum = 1
+  searchUserParam.value.pageSize = 10
+  searchUser()
+}
 
-const searchParam = ref({ username: '' })
-const pageNum = ref<number>(1)
-const pageSize = ref<number>(10)
 const total = ref<number>(0)
 const showTotal = () => `共 ${total.value} 条`
 const handlePageChange = (page: number, size: number) => {
   console.log(page, '查询数据，更新table数据', size)
 }
 const modalVisible = ref(false)
-const openCreateModal = ()=>{
+const openCreateModal = () => {
   modalVisible.value = true
 }
-const handleModalClose = ()=>{
+const handleModalClose = () => {
   modalVisible.value = false
 }
 const columns = [
@@ -80,15 +83,15 @@ const openDetail = (userId: number) => {
 searchUser()
 </script>
 <template>
-  <a-form layout="inline" :model="searchParam">
+  <a-form layout="inline" :model="searchUserParam">
     <a-form-item label="用户名">
-      <a-input v-model:value="searchParam.username"> </a-input>
+      <a-input v-model:value="searchUserParam.username"> </a-input>
     </a-form-item>
     <a-form-item>
       <a-button type="primary" :icon="h(SearchOutlined)" @click="searchUser"> 查询 </a-button>
     </a-form-item>
     <a-form-item>
-      <a-button :icon="h(ReloadOutlined)"> 重置 </a-button>
+      <a-button :icon="h(ReloadOutlined)" @click="reset"> 重置 </a-button>
     </a-form-item>
     <a-form-item>
       <a-button :icon="h(UserAddOutlined)" @click="openCreateModal"> 创建 </a-button>
@@ -113,8 +116,8 @@ searchUser()
     </template>
   </a-table>
   <a-pagination
-    v-model:current="pageNum"
-    v-model:page-size="pageSize"
+    v-model:current="searchUserParam.pageNum"
+    v-model:page-size="searchUserParam.pageSize"
     v-model:total="total"
     :show-total="showTotal"
     show-size-changer
@@ -122,7 +125,7 @@ searchUser()
     class="pagination"
   >
   </a-pagination>
-  <CreateUser :modalVisible = modalVisible @modalClose="handleModalClose"></CreateUser>
+  <CreateUser :modalVisible="modalVisible" @modalClose="handleModalClose"></CreateUser>
 </template>
 
 <style lang="less" scoped>

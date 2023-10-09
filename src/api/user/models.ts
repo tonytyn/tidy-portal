@@ -1,4 +1,9 @@
 
+export interface SearchUserParam {
+  username: string
+  pageNum: number
+  pageSize: number
+}
 export interface UserListResult {
   id: number
   username: string
