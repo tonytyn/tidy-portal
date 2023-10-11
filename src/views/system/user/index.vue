@@ -10,37 +10,15 @@ import { h, ref } from 'vue'
 
 import { SearchOutlined, ReloadOutlined, UserAddOutlined } from '@ant-design/icons-vue'
 import type { SearchUserParam, UserListResult } from '@/api/user/models'
-import { searchUserListApi } from '@/api/user'
+import { searchUserListApi, deleteUserApi } from '@/api/user'
 import CreateUser from './components/CreateUser.vue'
+import UserDetail from './components/UserDetail.vue'
+import EditUser from './components/EditUser.vue'
+import { message } from 'ant-design-vue'
 
+// 搜索
 const searchUserParam = ref<SearchUserParam>({ username: '', pageNum: 1, pageSize: 10 })
-
 const userList = ref<UserListResult[]>([])
-
-const searchUser = async () => {
-  const { data: res } = await searchUserListApi(searchUserParam.value)
-  userList.value = res.data.list
-  total.value = res.data.total
-}
-const reset = ()=>{
-  searchUserParam.value.username = ''
-  searchUserParam.value.pageNum = 1
-  searchUserParam.value.pageSize = 10
-  searchUser()
-}
-
-const total = ref<number>(0)
-const showTotal = () => `共 ${total.value} 条`
-const handlePageChange = (page: number, size: number) => {
-  console.log(page, '查询数据，更新table数据', size)
-}
-const modalVisible = ref(false)
-const openCreateModal = () => {
-  modalVisible.value = true
-}
-const handleModalClose = () => {
-  modalVisible.value = false
-}
 const columns = [
   {
     key: 'index',
@@ -76,9 +54,55 @@ const columns = [
     align: 'center'
   }
 ]
+const total = ref<number>(0)
+const searchUser = async () => {
+  const { data: res } = await searchUserListApi(searchUserParam.value)
+  userList.value = res.data.list
+  total.value = res.data.total
+}
+const showTotal = () => `共 ${total.value} 条`
+const handlePageChange = (page: number, size: number) => {
+  console.log(page, '查询数据，更新table数据', size)
+}
+// 重置
+const reset = () => {
+  searchUserParam.value.username = ''
+  searchUserParam.value.pageNum = 1
+  searchUserParam.value.pageSize = 10
+  searchUser()
+}
 
+// 创建
+const createModalVisible = ref(false)
+const openCreateModal = () => {
+  createModalVisible.value = true
+}
+const handleCreateModalClose = () => {
+  createModalVisible.value = false
+}
+// 详情
+const selectedUserId = ref(0)
+const detailModalVisible = ref(false)
 const openDetail = (userId: number) => {
-  console.log(userId)
+  selectedUserId.value = userId
+  detailModalVisible.value = true
+}
+const handleDetailModalClose = () => {
+  detailModalVisible.value = false
+}
+// 编辑
+const editModalVisible = ref(false)
+const openEdit = (userId: number) => {
+  selectedUserId.value = userId
+  editModalVisible.value = true
+}
+const handleEditModalClose = () => {
+  editModalVisible.value = false
+}
+// 删除
+const handleDelete = async (userId: number) => {
+  const { data: res } = await deleteUserApi(userId)
+  message.success(res.msg)
 }
 searchUser()
 </script>
@@ -109,8 +133,15 @@ searchUser()
       <template v-if="column.key === 'operation'">
         <a-space>
           <a-button type="primary" size="small" @click="openDetail(record.id)">详情</a-button>
-          <a-button type="primary" size="small" @click="openDetail(record.id)">编辑</a-button>
-          <a-button type="primary" size="small" @click="openDetail(record.id)">删除</a-button>
+          <a-button type="primary" size="small" @click="openEdit(record.id)">编辑</a-button>
+          <a-popconfirm
+            title="确定要删除这个账号吗？"
+            ok-text="是的"
+            cancel-text="我再想想"
+            @confirm="handleDelete(record.id)"
+          >
+            <a-button type="primary" size="small">删除</a-button>
+          </a-popconfirm>
         </a-space>
       </template>
     </template>
@@ -125,7 +156,19 @@ searchUser()
     class="pagination"
   >
   </a-pagination>
-  <CreateUser :modalVisible="modalVisible" @modalClose="handleModalClose"></CreateUser>
+  <CreateUser :modalVisible="createModalVisible" @modalClose="handleCreateModalClose"></CreateUser>
+  <UserDetail
+    v-if="detailModalVisible"
+    :modalVisible="detailModalVisible"
+    :userId="selectedUserId"
+    @modalClose="handleDetailModalClose"
+  ></UserDetail>
+  <EditUser
+    v-if="editModalVisible"
+    :modalVisible="editModalVisible"
+    :userId="selectedUserId"
+    @modalClose="handleEditModalClose"
+  ></EditUser>
 </template>
 
 <style lang="less" scoped>

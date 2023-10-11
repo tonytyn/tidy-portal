@@ -74,7 +74,7 @@ const userList = [
 ]
 export default [
   {
-    url: '/base/user',
+    url: '/base/user/list',
     method: 'get',
     response: ({query}) => {
       const resultList = userList.filter(user=>user.username.includes(query.username))
@@ -85,6 +85,20 @@ export default [
           total: resultList.length,
           list: resultList
         }
+      }
+    }
+  },
+  {
+    url: '/base/user/detail',
+    method: 'get',
+    response: ({query}) => {
+      console.log(query);
+      
+      const user = userList.find(user=>user.id === Number(query.id))
+      return {
+        code: 0,
+        msg: 'ok',
+        data: user
       }
     }
   },
@@ -103,6 +117,17 @@ export default [
       return {
         code: 0,
         msg: '创建成功（演示模式请勿当真）',
+        data: null
+      }
+    }
+  },
+  {
+    url: '/base/user/delete',
+    method: 'delete',
+    response: () => {
+      return {
+        code: 0,
+        msg: '删除成功（演示模式请勿当真）',
         data: null
       }
     }

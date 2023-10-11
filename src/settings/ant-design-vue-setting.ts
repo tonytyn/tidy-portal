@@ -16,7 +16,8 @@ import {
   ConfigProvider,
   Space,
   Tag,
-  Modal
+  Modal,
+  Popconfirm
 
 } from 'ant-design-vue'
 
@@ -39,6 +40,7 @@ export const setupAntDesignVue = (app: App<Element>): void => {
   app.use(Space)
   app.use(Tag)
   app.use(Modal)
+  app.use(Popconfirm)
 
 
 }

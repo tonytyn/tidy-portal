@@ -10,6 +10,14 @@ export interface UserListResult {
   account: string
   state: string
 }
+export interface UserDetailResult {
+  id: number
+  username: string
+  account: string
+  phone: string
+  state: string
+  createdAt: string
+}
 export interface CreateUserParam {
   username: string
   account: string
