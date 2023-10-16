@@ -158,13 +158,11 @@ searchUser()
   </a-pagination>
   <CreateUser :modalVisible="createModalVisible" @modalClose="handleCreateModalClose"></CreateUser>
   <UserDetail
-    v-if="detailModalVisible"
     :modalVisible="detailModalVisible"
     :userId="selectedUserId"
     @modalClose="handleDetailModalClose"
   ></UserDetail>
   <EditUser
-    v-if="editModalVisible"
     :modalVisible="editModalVisible"
     :userId="selectedUserId"
     @modalClose="handleEditModalClose"

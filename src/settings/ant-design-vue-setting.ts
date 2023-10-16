@@ -17,7 +17,9 @@ import {
   Space,
   Tag,
   Modal,
-  Popconfirm
+  Popconfirm,
+  Descriptions,
+  Switch
 
 } from 'ant-design-vue'
 
@@ -41,6 +43,8 @@ export const setupAntDesignVue = (app: App<Element>): void => {
   app.use(Tag)
   app.use(Modal)
   app.use(Popconfirm)
+  app.use(Descriptions)
+  app.use(Switch)
 
 
 }

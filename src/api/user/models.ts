@@ -5,13 +5,13 @@ export interface SearchUserParam {
   pageSize: number
 }
 export interface UserListResult {
-  id: number
+  readonly id: number
   username: string
   account: string
   state: string
 }
 export interface UserDetailResult {
-  id: number
+  readonly id: number
   username: string
   account: string
   phone: string
@@ -27,6 +27,8 @@ export interface CreateUserParam {
 
 export interface UpdateUserParam {
   readonly id: number
-  parentId: number
-  menuName: string
+  username: string
+  account: string
+  phone: string
+  state: string
 }

@@ -5,6 +5,7 @@ const userList = [
     id: 1,
     username: '张三',
     account: 'abc123...',
+    phone: '13856894587',
     state: '启用',
     createdAt: '2023-08-18'
   },
@@ -12,6 +13,7 @@ const userList = [
     id: 2,
     username: '李四',
     account: 'abc123...',
+    phone: '13856894587',
     state: '启用',
     createdAt: '2013-08-18'
   },
@@ -19,6 +21,7 @@ const userList = [
     id: 3,
     username: '王五',
     account: 'abc123...',
+    phone: '13856894587',
     state: '启用',
     createdAt: '2013-07-08'
   },
@@ -26,6 +29,7 @@ const userList = [
     id: 4,
     username: '赵六',
     account: 'abc123...',
+    phone: '13856894587',
     state: '启用',
     createdAt: '2013-12-18'
   },
@@ -33,6 +37,7 @@ const userList = [
     id: 5,
     username: '孙七',
     account: 'abc123...',
+    phone: '13856894587',
     state: '启用',
     createdAt: '2023-06-18'
   },
@@ -40,6 +45,7 @@ const userList = [
     id: 6,
     username: '周八',
     account: 'abc123...',
+    phone: '13856894587',
     state: '停用',
     createdAt: '2023-08-22'
   },
@@ -47,6 +53,7 @@ const userList = [
     id: 7,
     username: 'Tony',
     account: 'abc123...',
+    phone: '13856894587',
     state: '启用',
     createdAt: '2023-08-03'
   },
@@ -54,6 +61,7 @@ const userList = [
     id: 8,
     username: 'Miss',
     account: 'abc123...',
+    phone: '13856894587',
     state: '停用',
     createdAt: '2023-08-08'
   },
@@ -61,6 +69,7 @@ const userList = [
     id: 9,
     username: '王小二',
     account: 'abc123...',
+    phone: '13856894587',
     state: '启用',
     createdAt: '2023-01-18'
   },
@@ -68,6 +77,7 @@ const userList = [
     id: 10,
     username: '张先生',
     account: 'abc123...',
+    phone: '13856894587',
     state: '启用',
     createdAt: '2023-08-12'
   }
@@ -128,6 +138,17 @@ export default [
       return {
         code: 0,
         msg: '删除成功（演示模式请勿当真）',
+        data: null
+      }
+    }
+  },
+  {
+    url: '/base/user/update',
+    method: 'put',
+    response: () => {
+      return {
+        code: 0,
+        msg: '修改成功（演示模式请勿当真）',
         data: null
       }
     }
