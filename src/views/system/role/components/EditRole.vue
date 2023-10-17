@@ -47,9 +47,9 @@ const handleCancel = () => {
 }
 </script>
 <template>
-  <a-modal :open="modalVisible" title="用户详情" @cancel="handleCancel" :footer="null">
+  <a-modal :open="modalVisible" title="角色详情" @cancel="handleCancel" :footer="null">
     <a-form ref="formRef" :model="roleDetail" :label-col="{ span: 5 }" :wrapper-col="{ span: 15 }">
-      <a-form-item label="用户名" name="rolename">
+      <a-form-item label="角色名称" name="roleName">
         <a-input v-model:value="updateRoleParam.roleName" />
       </a-form-item>
       <a-form-item label="状态" name="state">

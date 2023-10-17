@@ -3,63 +3,21 @@ import { MockMethod } from 'vite-plugin-mock'
 const roleList = [
   {
     id: 1,
-    roleName: '张三',
+    roleName: '平凡的人',
     state: '启用',
     createdAt: '2023-08-18'
   },
   {
     id: 2,
-    roleName: '李四',
+    roleName: '开发者',
     state: '启用',
     createdAt: '2013-08-18'
   },
   {
     id: 3,
-    roleName: '王五',
-    state: '启用',
+    roleName: '系统管理员',
+    state: '停用',
     createdAt: '2013-07-08'
-  },
-  {
-    id: 4,
-    roleName: '赵六',
-    state: '启用',
-    createdAt: '2013-12-18'
-  },
-  {
-    id: 5,
-    roleName: '孙七',
-    state: '启用',
-    createdAt: '2023-06-18'
-  },
-  {
-    id: 6,
-    roleName: '周八',
-    state: '停用',
-    createdAt: '2023-08-22'
-  },
-  {
-    id: 7,
-    roleName: 'Tony',
-    state: '启用',
-    createdAt: '2023-08-03'
-  },
-  {
-    id: 8,
-    roleName: 'Miss',
-    state: '停用',
-    createdAt: '2023-08-08'
-  },
-  {
-    id: 9,
-    roleName: '王小二',
-    state: '启用',
-    createdAt: '2023-01-18'
-  },
-  {
-    id: 10,
-    roleName: '张先生',
-    state: '启用',
-    createdAt: '2023-08-12'
   }
 ]
 export default [
