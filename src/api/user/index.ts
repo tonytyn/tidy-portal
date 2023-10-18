@@ -13,11 +13,17 @@ export const searchUserListApi = (searchUserParam: SearchUserParam) => {
 export const getUserDetailApi = (userId: number) => {
   return defRequest.get<ResopnseResult<UserDetailResult>>('/user/detail?id='+userId)
 }
+export const getUserRoleIdsApi = (userId: number) => {
+  return defRequest.get<ResopnseResult<number[]>>('/user/roles?id='+userId)
+}
 export const createUserApi = (data: CreateUserParam) => {
   return defRequest.post<ResopnseResult<null>>('/user/create', data)
 }
 export const deleteUserApi = (id: number) => {
   return defRequest.delete<ResopnseResult<null>>('/user/delete?id=' + id)
+}
+export const updateUserRolesApi = (userId: number,roleIds: number[]) => {
+  return defRequest.put<ResopnseResult<number[]>>('/user/roles?id='+userId,roleIds)
 }
 export const updateUserApi = (data: UpdateUserParam) => {
   return defRequest.put<ResopnseResult<null>>('/user/update', data)

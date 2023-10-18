@@ -1,9 +1,12 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
-import { message } from 'ant-design-vue';
+import { message } from 'ant-design-vue'
 
-import { getUserDetailApi,updateUserApi } from '@/api/user'
-import type { UserDetailResult,UpdateUserParam } from '@/api/user/models'
+import type { Option } from '@/api/base-models'
+import type { UserDetailResult, UpdateUserParam } from '@/api/user/models'
+
+import { getUserDetailApi, getUserRoleIdsApi, updateUserRolesApi, updateUserApi } from '@/api/user'
+import { searchRoleListApi } from '@/api/role'
 
 const props = defineProps({
   modalVisible: Boolean,
@@ -24,8 +27,10 @@ const updateUserParam = ref<UpdateUserParam>({
   username: '',
   account: '',
   state: '',
-  phone: '',
+  phone: ''
 })
+const userRoleIds = ref<number[]>([])
+const roleOptions = ref<Option[]>([])
 watch(props, async () => {
   if (props.modalVisible) {
     const { data: res } = await getUserDetailApi(props.userId as number)
@@ -34,8 +39,23 @@ watch(props, async () => {
     updateUserParam.value.account = res.data.account
     updateUserParam.value.phone = res.data.phone
     updateUserParam.value.state = res.data.state
+    const { data: res2 } = await searchRoleListApi()
+    roleOptions.value = []
+    res2.data.forEach((role) => {
+      roleOptions.value.push({ label: role.roleName, value: role.id, disabled: false })
+    })
+    const { data: res3 } = await getUserRoleIdsApi(props.userId as number)
+    userRoleIds.value = res3.data
   }
 })
+const handleRoleChange = async () => {
+  const { data: res } = await updateUserRolesApi(props.userId as number, userRoleIds.value)
+  if (res.code !== 0) {
+    return message.error(res.msg)
+  }
+  message.success(res.msg)
+
+}
 
 const handleSubmit = async () => {
   const { data: res } = await updateUserApi(updateUserParam.value)
@@ -56,14 +76,21 @@ const handleCancel = () => {
   <a-modal :open="modalVisible" title="用户详情" @cancel="handleCancel" :footer="null">
     <a-form ref="formRef" :model="userDetail" :label-col="{ span: 5 }" :wrapper-col="{ span: 15 }">
       <a-form-item label="用户名" name="username">
-        <a-input v-model:value="updateUserParam.username"/> 
+        <a-input v-model:value="updateUserParam.username" />
       </a-form-item>
       <a-form-item label="账号" name="account">
-        <a-input :value="userDetail.account" disabled/> 
+        <a-input :value="userDetail.account" disabled />
       </a-form-item>
 
       <a-form-item label="手机号" name="phone">
-        <a-input v-model:value="updateUserParam.phone"/> 
+        <a-input v-model:value="updateUserParam.phone" />
+      </a-form-item>
+      <a-form-item label="角色">
+        <a-checkbox-group
+          v-model:value="userRoleIds"
+          :options="roleOptions"
+          @change="handleRoleChange"
+        />
       </a-form-item>
       <a-form-item label="状态" name="state">
         <a-switch

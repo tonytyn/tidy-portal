@@ -86,8 +86,8 @@ export default [
   {
     url: '/base/user/list',
     method: 'get',
-    response: ({query}) => {
-      const resultList = userList.filter(user=>user.username.includes(query.username))
+    response: ({ query }) => {
+      const resultList = userList.filter((user) => user.username.includes(query.username))
       return {
         code: 0,
         msg: 'ok',
@@ -101,10 +101,8 @@ export default [
   {
     url: '/base/user/detail',
     method: 'get',
-    response: ({query}) => {
-      console.log(query);
-      
-      const user = userList.find(user=>user.id === Number(query.id))
+    response: ({ query }) => {
+      const user = userList.find((user) => user.id === Number(query.id))
       return {
         code: 0,
         msg: 'ok',
@@ -113,11 +111,22 @@ export default [
     }
   },
   {
+    url: '/base/user/roles',
+    method: 'get',
+    response: () => {
+      return {
+        code: 0,
+        msg: 'ok',
+        data: [1, 2]
+      }
+    }
+  },
+  {
     url: '/base/user/create',
     method: 'post',
-    response: ({body}) => {
-      const exist = userList.some(user=>user.account === body.account)
-      if(exist){
+    response: ({ body }) => {
+      const exist = userList.some((user) => user.account === body.account)
+      if (exist) {
         return {
           code: 400,
           msg: '账号已存在',
@@ -149,6 +158,17 @@ export default [
       return {
         code: 0,
         msg: '修改成功（演示模式请勿当真）',
+        data: null
+      }
+    }
+  },
+  {
+    url: '/base/user/roles',
+    method: 'put',
+    response: () => {
+      return {
+        code: 0,
+        msg: '角色修改成功（演示模式请勿当真）',
         data: null
       }
     }

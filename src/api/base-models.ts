@@ -7,6 +7,11 @@ export interface BasicFetchResult<T> {
   items: T[]
   total: number
 }
+export interface Option {
+  label: string
+  value: number
+  disabled: boolean
+}
 
 export interface ResopnseResult<T> {
   code: number

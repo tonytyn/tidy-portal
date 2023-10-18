@@ -1,8 +1,11 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
 
-import { getUserDetailApi } from '@/api/user'
+import type { Option } from '@/api/base-models'
 import type { UserDetailResult } from '@/api/user/models'
+
+import { getUserDetailApi, getUserRoleIdsApi } from '@/api/user'
+import { searchRoleListApi } from '@/api/role'
 
 const props = defineProps({
   modalVisible: Boolean,
@@ -17,10 +20,19 @@ const userDetail = ref<UserDetailResult>({
   state: '',
   createdAt: ''
 })
+const userRoleIds = ref<number[]>([])
+const roleOptions = ref<Option[]>([])
 watch(props, async () => {
   if (props.modalVisible) {
     const { data: res } = await getUserDetailApi(props.userId as number)
     userDetail.value = res.data
+    const { data: res2 } = await searchRoleListApi()
+    roleOptions.value = []
+    res2.data.forEach((role) => {
+      roleOptions.value.push({ label: role.roleName, value: role.id, disabled: true })
+    })
+    const { data: res3 } = await getUserRoleIdsApi(props.userId as number)
+    userRoleIds.value = res3.data
   }
 })
 const emit = defineEmits(['modalClose'])
@@ -39,6 +51,9 @@ const handleCancel = () => {
       </a-form-item>
       <a-form-item label="手机号" name="phone">
         <a-input :value="userDetail.phone" disabled />
+      </a-form-item>
+      <a-form-item label="角色">
+        <a-checkbox-group v-model:value="userRoleIds" :options="roleOptions" />
       </a-form-item>
       <a-form-item label="状态" name="state">
         <a-switch :checked="userDetail.state === '启用'" disabled />
