@@ -1,6 +1,6 @@
 import { MockMethod } from 'vite-plugin-mock'
 
-const menuTree = [
+const menuList = [
   {
     id: 1,
     menuName: '应用中心',
@@ -107,12 +107,96 @@ const menuTree = [
         permissionCode: 'menu',
         menuType: 'page',
         developer: 'Tony',
-        finishAt: '开发中',
+        finishAt: '开发中'
       }
     ]
   }
 ]
+const menuTree = [
+  {
+    key: 1,
+    title: '应用中心',
+    children: [
+      {
+        key: 11,
+        title: '应用列表'
+      }
+    ]
+  },
+  {
+    key: 2,
+    title: '开发者中心',
+    children: [
+      {
+        key: 21,
+        title: '应用管理'
+      }
+    ]
+  },
+  {
+    key: 3,
+    title: '系统管理',
+    children: [
+      {
+        key: 31,
+        title: '用户管理',
+        children: [
+          {
+            key: 311,
+            title: '搜索用户'
+          },
+          {
+            key: 312,
+            title: '查看用户详情'
+          },
+          {
+            key: 313,
+            title: '创建用户'
+          },
+          {
+            key: 314,
+            title: '编辑用户信息'
+          }
+        ]
+      },
+      {
+        key: 32,
+        title: '角色管理',
+        children: [
+          {
+            key: 321,
+            title: '创建角色'
+          },
+          {
+            key: 322,
+            title: '编辑角色'
+          },
+          {
+            key: 323,
+            title: '删除角色'
+          }
+        ]
+      },
+      {
+        key: 4,
+        title: '菜单管理'
+      }
+    ]
+  }
+]
+
 export default [
+  {
+    url: '/base/menu/list',
+    method: 'get',
+    response: () => {
+      return {
+        code: 0,
+        msg: 'ok',
+        data: menuList
+      }
+    }
+  },
   {
     url: '/base/menu/tree',
     method: 'get',

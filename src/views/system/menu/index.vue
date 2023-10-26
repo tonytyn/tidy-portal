@@ -5,8 +5,8 @@ export default {
 </script>
 <script lang="ts" setup>
 import { ref } from 'vue'
-import type { MenuTreeResult } from '@/api/menu/models'
-import { getMenuTreeApi } from '@/api/menu'
+import type { MenuListResult } from '@/api/menu/models'
+import { getMenuListApi } from '@/api/menu'
 const columns = [
   {
     title: '菜单名称',
@@ -29,17 +29,17 @@ const columns = [
     dataIndex: 'finishAt'
   }
 ]
-const menuTree = ref<MenuTreeResult[]>([])
+const menuList = ref<MenuListResult[]>([])
 
 const initMenus = async ()=>{
-  const {data:res} = await getMenuTreeApi()
-  menuTree.value = res.data
+  const {data:res} = await getMenuListApi()
+  menuList.value = res.data
 }
 initMenus()
 </script>
 <template>
   <div>
-    <a-table rowKey="id" :columns="columns"  :data-source="menuTree" :pagination="false" />
+    <a-table rowKey="id" :columns="columns"  :data-source="menuList" :pagination="false" />
   </div>
 </template>
 

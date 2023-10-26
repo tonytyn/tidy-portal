@@ -8,8 +8,11 @@ export const searchRoleListApi = () => {
   // 这里本想使用restFul风格的（user/username/张三）无奈mock-server接收path参数不方便，只能先这样用query传了
   return defRequest.get<ResopnseResult<RoleListResult[]>>('/role/list')
 }
-export const getRoleDetailApi = (userId: number) => {
-  return defRequest.get<ResopnseResult<RoleListResult>>('/role/detail?id=' + userId)
+export const getRoleDetailApi = (roleId: number) => {
+  return defRequest.get<ResopnseResult<RoleListResult>>('/role/detail?id=' + roleId)
+}
+export const getRoleMenusApi = (roleId: number) => {
+  return defRequest.get<ResopnseResult<number[]>>('/role/menus?id=' + roleId)
 }
 export const createRoleApi = (data: CreateRoleParam) => {
   return defRequest.post<ResopnseResult<null>>('/role/create', data)

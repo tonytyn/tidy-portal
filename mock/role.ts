@@ -36,12 +36,22 @@ export default [
     url: '/base/role/detail',
     method: 'get',
     response: ({query}) => {
-      console.log(query);
       const role = roleList.find(role=>role.id === Number(query.id))
       return {
         code: 0,
         msg: 'ok',
         data: role
+      }
+    }
+  },
+  {
+    url: '/base/role/menus',
+    method: 'get',
+    response: () => {
+      return {
+        code: 0,
+        msg: 'ok',
+        data: [1,2,31,311]
       }
     }
   },
