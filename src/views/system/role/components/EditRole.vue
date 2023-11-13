@@ -22,8 +22,12 @@ const roleDetail = ref<RoleDetailResult>({
 const updateRoleParam = ref<UpdateRoleParam>({
   id: 0,
   roleName: '',
-  state: ''
+  state: '',
+  menuIds: []
 })
+const menuTree = ref<MenuTreeResult[]>([])
+const checkedKeys = ref<number[]>([])
+const leafNodes = ref<number[]>([])
 watch(props, async () => {
   if (props.modalVisible) {
     const { data: res } = await getRoleDetailApi(props.roleId as number)
@@ -32,20 +36,26 @@ watch(props, async () => {
     updateRoleParam.value.state = res.data.state
     const { data: res2 } = await getMenuTreeApi()
     menuTree.value = res2.data
+    leafNodes.value = filterLeafNode(menuTree.value, new Array<number>())
     const { data: res3 } = await getRoleMenusApi(props.roleId as number)
-    checkedKeys.value = res3.data
+    checkedKeys.value = res3.data.filter((element) => leafNodes.value.includes(element))
   }
 })
-
-const menuTree = ref<MenuTreeResult[]>([])
-
-// const expandedKeys = ref<number[]>()
-// const selectedKeys = ref<number[]>()
-const checkedKeys = ref<number[]>()
+// 回显选中的节点时要过把叶子节点过滤出来，不然该节点就会变成全选状态。
+// TODO 后续这个方法应该抽取出公共的方法来复用，定义好泛型
+const filterLeafNode = (menuTree: MenuTreeResult[], leafNodes: number[]) => {
+  menuTree.forEach((element) => {
+    if (element?.children?.length) {
+      filterLeafNode(element.children, leafNodes)
+    } else {
+      leafNodes.push(element.key)
+    }
+  })
+  return leafNodes
+}
 
 const handleSubmit = async () => {
-  // todo 这里需要先保存变更后的菜单树，菜单只保留叶子节点的数据，
-  // 因为如果保留了父节点后回显的时候会把没有选中的子节点也变成选中状态，就不对了。
+  updateRoleParam.value.menuIds = checkedKeys.value.filter((element) => leafNodes.value.includes(element))
   const { data: res } = await updateRoleApi(updateRoleParam.value)
   if (res.code !== 0) {
     return message.error(res.msg)

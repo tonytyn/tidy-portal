@@ -19,4 +19,5 @@ export interface UpdateRoleParam {
   readonly id: number
   roleName: string
   state: string
+  menuIds: number[]
 }

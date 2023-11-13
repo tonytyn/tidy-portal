@@ -10,5 +10,5 @@ export interface MenuListResult {
 export interface MenuTreeResult {
   key: number
   title: string // 菜单名称
-  children?: MenuTreeResult
+  children?: MenuTreeResult[]
 }
