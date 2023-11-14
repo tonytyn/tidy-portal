@@ -20,4 +20,4 @@ const createMenuParam = reactive<CreateMenuParam>({
 })
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="less" scoped></style>

@@ -31,16 +31,16 @@ const columns = [
 ]
 const menuList = ref<MenuListResult[]>([])
 
-const initMenus = async ()=>{
-  const {data:res} = await getMenuListApi()
+const initMenus = async () => {
+  const { data: res } = await getMenuListApi()
   menuList.value = res.data
 }
 initMenus()
 </script>
 <template>
   <div>
-    <a-table rowKey="id" :columns="columns"  :data-source="menuList" :pagination="false" />
+    <a-table rowKey="id" :columns="columns" :data-source="menuList" :pagination="false" />
   </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="less" scoped></style>

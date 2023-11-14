@@ -55,7 +55,9 @@ const filterLeafNode = (menuTree: MenuTreeResult[], leafNodes: number[]) => {
 }
 
 const handleSubmit = async () => {
-  updateRoleParam.value.menuIds = checkedKeys.value.filter((element) => leafNodes.value.includes(element))
+  updateRoleParam.value.menuIds = checkedKeys.value.filter((element) =>
+    leafNodes.value.includes(element)
+  )
   const { data: res } = await updateRoleApi(updateRoleParam.value)
   if (res.code !== 0) {
     return message.error(res.msg)
@@ -103,4 +105,4 @@ const handleCancel = () => {
   </a-modal>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="less" scoped></style>

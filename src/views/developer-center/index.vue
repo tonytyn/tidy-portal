@@ -4,7 +4,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { ref } from 'vue'
-  const msg = ref('应用管理')
+import { ref } from 'vue'
+const msg = ref('应用管理')
 </script>
-<style lang="scss" scoped></style>
+<style lang="less" scoped></style>
