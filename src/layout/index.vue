@@ -5,9 +5,9 @@ export default {
 }
 </script>
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { RouterView, useRouter, type RouteRecordRaw } from 'vue-router'
-
+import { message } from 'ant-design-vue'
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons-vue'
 
 const selectedPages = ref<string[]>([])
@@ -21,11 +21,7 @@ const activePane = ref<string>('')
 
 // 点击左侧菜单栏中的页面
 const handlePageChange = (route: RouteRecordRaw) => {
-  if (!paneList.value.find((r) => r.name === route.name)) {
-    paneList.value.push(route)
-    orderedPaneList.value.push(route.name as string)
-  }
-  activePane.value = route.name as string
+  router.push(route?.path as string)
 }
 // tab标签切换
 const handleTabChange = (activeKey: string) => {
@@ -40,6 +36,10 @@ const handleTabChange = (activeKey: string) => {
 }
 // 关闭tab标签
 const handleTabClose = (targetKey: string | MouseEvent) => {
+  if (paneList.value.length === 1) {
+    message.info('别关啦，再关啥也看不着啦！')
+    return
+  }
   paneList.value = paneList.value.filter((pane) => pane.name !== targetKey)
   orderedPaneList.value = orderedPaneList.value.filter((pane) => pane !== targetKey)
   if (activePane.value === targetKey) {
@@ -54,6 +54,18 @@ const handleTabClose = (targetKey: string | MouseEvent) => {
     }
   }
 }
+watch(
+  () => router.currentRoute.value,
+  (newValue,oldValue) => {
+  if (!paneList.value.find((r) => r.name === newValue.name)) {
+    const route = {name:newValue.name,meta:newValue.meta} as RouteRecordRaw
+    paneList.value.push(route)
+    orderedPaneList.value.push(newValue.name as string)
+  }
+  activePane.value = newValue.name as string
+  },
+  { immediate: true }
+)
 </script>
 
 <template>
@@ -144,5 +156,6 @@ const handleTabClose = (targetKey: string | MouseEvent) => {
 }
 .pane-content {
   padding: 10px;
+  margin-top: -15px;
 }
 </style>

@@ -19,7 +19,7 @@ const router = createRouter({
       path: '/',
       name: 'Main',
       component: Layout,
-      // redirect: '/app-center/list',
+      redirect: '/app-center/list',
       children: [
         {
           path: 'app-center',

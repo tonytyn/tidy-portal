@@ -21,7 +21,9 @@ import {
   Descriptions,
   Switch,
   Checkbox,
-  Tree
+  Tree,
+  Collapse,
+  Card
 } from 'ant-design-vue'
 
 export const setupAntDesignVue = (app: App<Element>): void => {
@@ -48,4 +50,6 @@ export const setupAntDesignVue = (app: App<Element>): void => {
   app.use(Switch)
   app.use(Checkbox)
   app.use(Tree)
+  app.use(Collapse)
+  app.use(Card)
 }
