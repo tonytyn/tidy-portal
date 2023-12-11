@@ -1,10 +1,6 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 
-import {
-  AppstoreAddOutlined,
-  CodeOutlined,
-  SettingOutlined
-} from '@ant-design/icons-vue'
+import { AppstoreAddOutlined, CodeOutlined, SettingOutlined } from '@ant-design/icons-vue'
 
 import Layout from '@/layout/index.vue'
 /**
@@ -13,7 +9,8 @@ import Layout from '@/layout/index.vue'
  */
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  // history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHashHistory(),
   routes: [
     {
       path: '/',
@@ -24,57 +21,54 @@ const router = createRouter({
         {
           path: 'app-center',
           name: 'AppCenter',
-          meta: { title:'应用中心',icon: AppstoreAddOutlined },
+          meta: { title: '应用中心', icon: AppstoreAddOutlined },
           children: [
             {
               path: '/app-center/list',
               name: 'AppList',
-              meta: { title:'应用列表',icon: '345' },
+              meta: { title: '应用列表', icon: '345' },
               component: () => import('@/views/app-center/index.vue')
-            },
-            
+            }
           ]
         },
         {
           path: 'developer-center',
           name: 'DeveloperCenter',
-          meta: { title:'开发者中心',icon: CodeOutlined },
+          meta: { title: '开发者中心', icon: CodeOutlined },
           children: [
             {
               path: '/developer-center/my',
               name: 'MyApp',
-              meta: { title:'应用管理',icon: '345' },
+              meta: { title: '应用管理', icon: '345' },
               component: () => import('@/views/developer-center/index.vue')
-            },
-            
+            }
           ]
         },
         {
           path: 'system',
           name: 'System',
-          meta: { title:'系统管理',icon: SettingOutlined },
+          meta: { title: '系统管理', icon: SettingOutlined },
           children: [
             {
               path: '/system/user',
               name: 'User',
-              meta: { title:'用户管理',icon: '345' },
+              meta: { title: '用户管理', icon: '345' },
               component: () => import('@/views/system/user/index.vue')
             },
             {
               path: '/system/role',
               name: 'Role',
-              meta: { title:'角色管理',icon: '345' },
+              meta: { title: '角色管理', icon: '345' },
               component: () => import('@/views/system/role/index.vue')
             },
             {
               path: '/system/menu',
               name: 'Menus',
-              meta: { title:'菜单管理',icon: '345' },
+              meta: { title: '菜单管理', icon: '345' },
               component: () => import('@/views/system/menu/index.vue')
             }
           ]
         }
-        
       ]
     }
   ]
