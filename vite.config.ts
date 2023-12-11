@@ -8,6 +8,7 @@ import { viteMockServe } from 'vite-plugin-mock'
 export default defineConfig(({ command }: ConfigEnv): UserConfig => {
   
   return {
+    base: './',
     plugins: [
       vue(),
       viteMockServe({
