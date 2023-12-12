@@ -22,7 +22,7 @@ const roleList = [
 ]
 export default [
   {
-    url: '/base/role/list',
+    url: '/role/list',
     method: 'get',
     response: () => {
       return {
@@ -33,10 +33,10 @@ export default [
     }
   },
   {
-    url: '/base/role/detail',
+    url: '/role/detail',
     method: 'get',
-    response: ({query}) => {
-      const role = roleList.find(role=>role.id === Number(query.id))
+    response: ({ query }) => {
+      const role = roleList.find((role) => role.id === Number(query.id))
       return {
         code: 0,
         msg: 'ok',
@@ -45,22 +45,22 @@ export default [
     }
   },
   {
-    url: '/base/role/menus',
+    url: '/role/menus',
     method: 'get',
     response: () => {
       return {
         code: 0,
         msg: 'ok',
-        data: [1,2,31,311]
+        data: [1, 2, 31, 311]
       }
     }
   },
   {
-    url: '/base/role/create',
+    url: '/role/create',
     method: 'post',
-    response: ({body}) => {
-      const exist = roleList.some(role=>role.roleName === body.roleName)
-      if(exist){
+    response: ({ body }) => {
+      const exist = roleList.some((role) => role.roleName === body.roleName)
+      if (exist) {
         return {
           code: 400,
           msg: '账号已存在',
@@ -75,7 +75,7 @@ export default [
     }
   },
   {
-    url: '/base/role/delete',
+    url: '/role/delete',
     method: 'delete',
     response: () => {
       return {
@@ -86,7 +86,7 @@ export default [
     }
   },
   {
-    url: '/base/role/update',
+    url: '/role/update',
     method: 'put',
     response: () => {
       return {

@@ -187,7 +187,7 @@ const menuTree = [
 
 export default [
   {
-    url: '/base/menu/list',
+    url: '/menu/list',
     method: 'get',
     response: () => {
       return {
@@ -198,7 +198,7 @@ export default [
     }
   },
   {
-    url: '/base/menu/tree',
+    url: '/menu/tree',
     method: 'get',
     response: () => {
       return {

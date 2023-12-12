@@ -84,7 +84,7 @@ const userList = [
 ]
 export default [
   {
-    url: '/base/user/list',
+    url: '/user/list',
     method: 'get',
     response: ({ query }) => {
       const resultList = userList.filter((user) => user.username.includes(query.username))
@@ -99,7 +99,7 @@ export default [
     }
   },
   {
-    url: '/base/user/detail',
+    url: '/user/detail',
     method: 'get',
     response: ({ query }) => {
       const user = userList.find((user) => user.id === Number(query.id))
@@ -111,7 +111,7 @@ export default [
     }
   },
   {
-    url: '/base/user/roles',
+    url: '/user/roles',
     method: 'get',
     response: () => {
       return {
@@ -122,7 +122,7 @@ export default [
     }
   },
   {
-    url: '/base/user/create',
+    url: '/user/create',
     method: 'post',
     response: ({ body }) => {
       const exist = userList.some((user) => user.account === body.account)
@@ -141,7 +141,7 @@ export default [
     }
   },
   {
-    url: '/base/user/delete',
+    url: '/user/delete',
     method: 'delete',
     response: () => {
       return {
@@ -152,7 +152,7 @@ export default [
     }
   },
   {
-    url: '/base/user/update',
+    url: '/user/update',
     method: 'put',
     response: () => {
       return {
@@ -163,7 +163,7 @@ export default [
     }
   },
   {
-    url: '/base/user/roles',
+    url: '/user/roles',
     method: 'put',
     response: () => {
       return {
