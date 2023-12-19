@@ -6,63 +6,56 @@ export default {
 </script>
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import { RouterView, useRouter, type RouteRecordRaw } from 'vue-router'
+import { RouterView, useRouter, type RouteRecordRaw, useRoute } from 'vue-router'
 import { message } from 'ant-design-vue'
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons-vue'
+import type { Pane } from '@/api/base-models'
+
 
 const selectedPages = ref<string[]>([])
 const collapsed = ref<boolean>(false)
 
 const router = useRouter()
 const menuList = router.getRoutes().find((route) => route.name === 'Main')?.children
-const paneList = ref<RouteRecordRaw[]>([])
-const orderedPaneList = ref<string[]>([])
-const activePane = ref<string>('')
+const paneList = ref<Pane[]>([])
+const orderedKeyList = ref<string[]>([])
+const activeKey = ref<string>('')
 
 // 点击左侧菜单栏中的页面
 const handlePageChange = (route: RouteRecordRaw) => {
-  router.push(route?.path as string)
+  router.push(route)
 }
 // tab标签切换
 const handleTabChange = (activeKey: string) => {
-  selectedPages.value = []
-  selectedPages.value.push(activeKey)
-
-  const route = router.getRoutes().find((route) => route.name === activeKey)
-  router.push(route?.path as string)
-  orderedPaneList.value = orderedPaneList.value.filter((pane) => pane !== activeKey)
-  orderedPaneList.value.push(activeKey)
-  activePane.value = activeKey
+  router.push({ name: activeKey })
 }
 // 关闭tab标签
-const handleTabClose = (targetKey: string | MouseEvent) => {
-  if (paneList.value.length === 1) {
-    message.info('别关啦，再关啥也看不着啦！')
-    return
+const handleTabClose = (targetKey: string) => {
+  if (orderedKeyList.value.length === 1) {
+    return message.info('别关啦，再关啥也看不着啦！')
   }
-  paneList.value = paneList.value.filter((pane) => pane.name !== targetKey)
-  orderedPaneList.value = orderedPaneList.value.filter((pane) => pane !== targetKey)
-  if (activePane.value === targetKey) {
-    if (orderedPaneList.value.length > 0) {
-      activePane.value = orderedPaneList.value[paneList.value.length - 1]
-      const route = router.getRoutes().find((route) => route.name === activePane.value)
-      router.push(route?.path as string)
-    } else {
-      activePane.value = ''
-      const route = router.getRoutes().find((route) => route.name === 'Main')
-      router.push(route?.path as string)
-    }
+  paneList.value = paneList.value.filter((pane) => pane.key !== targetKey)
+  orderedKeyList.value = orderedKeyList.value.filter((pane) => pane !== targetKey)
+  if (activeKey.value === targetKey) {
+    const newKey = orderedKeyList.value[orderedKeyList.value.length - 1]
+    router.push({ name: newKey })
   }
 }
+// 监听路由
+const route = useRoute()
 watch(
-  () => router.currentRoute.value,
-  (newValue,oldValue) => {
-  if (!paneList.value.find((r) => r.name === newValue.name)) {
-    const route = {name:newValue.name,meta:newValue.meta} as RouteRecordRaw
-    paneList.value.push(route)
-    orderedPaneList.value.push(newValue.name as string)
-  }
-  activePane.value = newValue.name as string
+  route,
+  (newValue) => {
+    const routeName = newValue.name as string
+    activeKey.value = routeName
+    selectedPages.value = [routeName]
+    if (orderedKeyList.value.includes(routeName)) {
+      orderedKeyList.value = orderedKeyList.value.filter(key => key !== routeName)
+    } else {
+      const pane = { key: routeName, title: newValue.meta.title as string }
+      paneList.value.push(pane)
+    }
+    orderedKeyList.value.push(routeName)
   },
   { immediate: true }
 )
@@ -111,17 +104,17 @@ watch(
       <a-layout-content>
         <a-tabs
           type="editable-card"
-          v-model:activeKey="activePane"
+          v-model:activeKey="activeKey"
           hideAdd
           @edit="handleTabClose"
           @change="handleTabChange"
         >
-          <a-tab-pane v-for="pane in paneList" :key="pane.name" :tab="pane.meta?.title">
+          <a-tab-pane v-for="pane in paneList" :key="pane.key" :tab="pane.title">
           </a-tab-pane>
         </a-tabs>
         <div class="pane-content">
-          <router-view v-if="activePane" v-slot="{ Component }">
-            <keep-alive :include="orderedPaneList">
+          <router-view v-if="activeKey" v-slot="{ Component }">
+            <keep-alive :include="orderedKeyList">
               <component :is="Component" />
             </keep-alive>
           </router-view>
@@ -139,13 +132,16 @@ watch(
   transition: visibility;
   transition-delay: 0.2s;
 }
+
 .logo-container {
   height: 64px;
   padding: 5px;
 }
+
 .title-hidden {
   visibility: hidden;
 }
+
 .collapse-trigger {
   cursor: pointer;
   transition: color 0.3s;
@@ -154,6 +150,7 @@ watch(
 .collapse-trigger:hover {
   color: #1890ff;
 }
+
 .pane-content {
   padding: 10px;
   margin-top: -15px;

@@ -18,8 +18,13 @@ export interface ResopnseResult<T> {
   msg: string
   data: T
 }
-
 export interface PageResult<T> {
   total: number
   list: T[]
 }
+
+export interface Pane {
+  key: string
+  title: string
+}
+
