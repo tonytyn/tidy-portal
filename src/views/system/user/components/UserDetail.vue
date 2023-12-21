@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
 
-import type { Option } from '@/api/base-models'
 import type { UserDetailResult } from '@/api/user/models'
 
 import { getUserDetailApi, getUserRoleIdsApi } from '@/api/user'

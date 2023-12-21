@@ -2,7 +2,6 @@
 import { ref, watch } from 'vue'
 import { message } from 'ant-design-vue'
 
-import type { Option } from '@/api/base-models'
 import type { UserDetailResult, UpdateUserParam } from '@/api/user/models'
 
 import { getUserDetailApi, getUserRoleIdsApi, updateUserRolesApi, updateUserApi } from '@/api/user'
