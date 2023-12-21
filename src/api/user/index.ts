@@ -1,5 +1,4 @@
 import { defRequest } from '@/utils/request'
-import type { ResponseResult, PageResult } from '@/api/base-models'
 import type {
   SearchUserParam,
   UserDetailResult,

@@ -9,7 +9,6 @@ import { ref, watch } from 'vue'
 import { RouterView, useRouter, type RouteRecordRaw, useRoute } from 'vue-router'
 import { message } from 'ant-design-vue'
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons-vue'
-import type { Pane } from '@/api/base-models'
 
 
 const selectedPages = ref<string[]>([])

@@ -1,5 +1,4 @@
 import { defRequest } from '@/utils/request'
-import type { ResponseResult } from '@/api/base-models'
 import type { RoleListResult, CreateRoleParam, UpdateRoleParam } from './models'
 
 // 接口顺序：查/增/删/改（强迫症犯了）
