@@ -13,7 +13,7 @@ export interface Option {
   disabled: boolean
 }
 
-export interface ResopnseResult<T> {
+export interface ResponseResult<T> {
   code: number
   msg: string
   data: T
@@ -27,4 +27,3 @@ export interface Pane {
   key: string
   title: string
 }
-
