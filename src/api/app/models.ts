@@ -1,4 +1,4 @@
-export interface AppListResult {
+export interface AppListModel {
   id: number
   appKey: string // 应用唯一标识
   appName: string // 应用名称

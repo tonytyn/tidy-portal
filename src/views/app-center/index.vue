@@ -5,8 +5,8 @@ export default {
 </script>
 <script setup lang="ts">
 import { ref } from 'vue'
-import { searchAppListApi } from '@/api/app/index'
-import type { AppListResult } from '@/api/app/models'
+import { searchAppList } from '@/api/app/actions'
+import type { AppListModel } from '@/api/app/models'
 
 const msg =
   '应用使用形式1：所有人无需申请即可使用2：用户自己申请，管理员同意后可以使用3：管理员邀请后可以使用'
@@ -21,10 +21,10 @@ const viewDetail = () => {
 const enter = () => {
   console.log('吃了吗')
 }
-const authorizedAppList = ref<AppListResult[]>([])
-const unAuthorizedAppList = ref<AppListResult[]>([])
+const authorizedAppList = ref<AppListModel[]>([])
+const unAuthorizedAppList = ref<AppListModel[]>([])
 const searchApp = async () => {
-  const { data: res } = await searchAppListApi()
+  const { data: res } = await searchAppList()
   res.data.forEach((app) => {
     if (app.authorized) {
       authorizedAppList.value.push(app)
