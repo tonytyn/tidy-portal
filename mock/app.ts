@@ -88,10 +88,18 @@ export default [
     url: '/app/detail',
     method: 'get',
     response: ({ query }) => {
+      console.log(query.id)
       return {
         code: 0,
         msg: 'ok',
-        data: '测试测试'
+        data: {
+          id: 111,
+          targetUser: '车间操作工包括临时工及援产人员',
+          responseDept: '人力资源部',
+          creator: '张三先生',
+          contactWay: '钉钉搜索：人力资源小组张三丰，电话：12332155566',
+          msg: '应用使用形式1：所有人无需申请即可使用2：用户自己申请，管理员同意后可以使用3：管理员邀请后可以使用'
+        }
       }
     }
   },
