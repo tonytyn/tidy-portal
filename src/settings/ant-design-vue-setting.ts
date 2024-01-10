@@ -23,7 +23,9 @@ import {
   Checkbox,
   Tree,
   Collapse,
-  Card
+  Card,
+  Flex,
+  Typography
 } from 'ant-design-vue'
 
 export const setupAntDesignVue = (app: App<Element>): void => {
@@ -52,4 +54,6 @@ export const setupAntDesignVue = (app: App<Element>): void => {
   app.use(Tree)
   app.use(Collapse)
   app.use(Card)
+  app.use(Flex)
+  app.use(Typography)
 }
