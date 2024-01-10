@@ -10,7 +10,7 @@ import { h, ref } from 'vue'
 
 import { SearchOutlined, ReloadOutlined, UserAddOutlined } from '@ant-design/icons-vue'
 import type { SearchUserParam, UserListModel } from '@/api/user/models'
-import { searchUserListApi, deleteUserApi } from '@/api/user/actions'
+import { searchUserList, deleteUser } from '@/api/user/actions'
 import CreateUser from './components/CreateUser.vue'
 import UserDetail from './components/UserDetail.vue'
 import EditUser from './components/EditUser.vue'
@@ -56,7 +56,7 @@ const columns = [
 ]
 const total = ref<number>(0)
 const searchUser = async () => {
-  const { data: res } = await searchUserListApi(searchUserParam.value)
+  const { data: res } = await searchUserList(searchUserParam.value)
   userList.value = res.data.list
   total.value = res.data.total
 }
@@ -101,7 +101,7 @@ const handleEditModalClose = () => {
 }
 // 删除
 const handleDelete = async (userId: number) => {
-  const { data: res } = await deleteUserApi(userId)
+  const { data: res } = await deleteUser(userId)
   message.success(res.msg)
 }
 searchUser()

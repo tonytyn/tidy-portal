@@ -4,13 +4,8 @@ import { message } from 'ant-design-vue'
 
 import type { UserDetailModel, UpdateUserParam } from '@/api/user/models'
 
-import {
-  getUserDetailApi,
-  getUserRoleIdsApi,
-  updateUserRolesApi,
-  updateUserApi
-} from '@/api/user/actions'
-import { searchRoleListApi } from '@/api/role/actions'
+import { getUserDetail, getUserRoleIds, updateUserRoles, updateUser } from '@/api/user/actions'
+import { searchRoleList } from '@/api/role/actions'
 
 const props = defineProps({
   modalVisible: Boolean,
@@ -37,23 +32,23 @@ const userRoleIds = ref<number[]>([])
 const roleOptions = ref<Option[]>([])
 watch(props, async () => {
   if (props.modalVisible) {
-    const { data: res } = await getUserDetailApi(props.userId as number)
+    const { data: res } = await getUserDetail(props.userId as number)
     userDetail.value = res.data
     updateUserParam.value.username = res.data.username
     updateUserParam.value.account = res.data.account
     updateUserParam.value.phone = res.data.phone
     updateUserParam.value.state = res.data.state
-    const { data: res2 } = await searchRoleListApi()
+    const { data: res2 } = await searchRoleList()
     roleOptions.value = []
     res2.data.forEach((role) => {
       roleOptions.value.push({ label: role.roleName, value: role.id, disabled: false })
     })
-    const { data: res3 } = await getUserRoleIdsApi(props.userId as number)
+    const { data: res3 } = await getUserRoleIds(props.userId as number)
     userRoleIds.value = res3.data
   }
 })
 const handleRoleChange = async () => {
-  const { data: res } = await updateUserRolesApi(props.userId as number, userRoleIds.value)
+  const { data: res } = await updateUserRoles(props.userId as number, userRoleIds.value)
   if (res.code !== 0) {
     return message.error(res.msg)
   }
@@ -61,7 +56,7 @@ const handleRoleChange = async () => {
 }
 
 const handleSubmit = async () => {
-  const { data: res } = await updateUserApi(updateUserParam.value)
+  const { data: res } = await updateUser(updateUserParam.value)
   if (res.code !== 0) {
     return message.error(res.msg)
   }

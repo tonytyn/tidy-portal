@@ -4,8 +4,8 @@ import { message } from 'ant-design-vue'
 
 import type { MenuTreeModel } from '@/api/menu/models'
 import type { RoleDetailModel, UpdateRoleParam } from '@/api/role/models'
-import { getRoleDetailApi, getRoleMenusApi, updateRoleApi } from '@/api/role/actions'
-import { getMenuTreeApi } from '@/api/menu/actions'
+import { getRoleDetail, getRoleMenus, updateRole } from '@/api/role/actions'
+import { getMenuTree } from '@/api/menu/actions'
 
 const props = defineProps({
   modalVisible: Boolean,
@@ -30,14 +30,14 @@ const checkedKeys = ref<number[]>([])
 const leafNodes = ref<number[]>([])
 watch(props, async () => {
   if (props.modalVisible) {
-    const { data: res } = await getRoleDetailApi(props.roleId as number)
+    const { data: res } = await getRoleDetail(props.roleId as number)
     roleDetail.value = res.data
     updateRoleParam.value.roleName = res.data.roleName
     updateRoleParam.value.state = res.data.state
-    const { data: res2 } = await getMenuTreeApi()
+    const { data: res2 } = await getMenuTree()
     menuTree.value = res2.data
     leafNodes.value = filterLeafNode(menuTree.value, new Array<number>())
-    const { data: res3 } = await getRoleMenusApi(props.roleId as number)
+    const { data: res3 } = await getRoleMenus(props.roleId as number)
     checkedKeys.value = res3.data.filter((element) => leafNodes.value.includes(element))
   }
 })
@@ -58,7 +58,7 @@ const handleSubmit = async () => {
   updateRoleParam.value.menuIds = checkedKeys.value.filter((element) =>
     leafNodes.value.includes(element)
   )
-  const { data: res } = await updateRoleApi(updateRoleParam.value)
+  const { data: res } = await updateRole(updateRoleParam.value)
   if (res.code !== 0) {
     return message.error(res.msg)
   }

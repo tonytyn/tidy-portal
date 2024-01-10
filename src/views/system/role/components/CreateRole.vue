@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { message } from 'ant-design-vue'
 
-import { createRoleApi } from '@/api/role/actions'
+import { createRole } from '@/api/role/actions'
 import type { CreateRoleParam } from '@/api/role/models'
 
 defineProps({
@@ -15,7 +15,7 @@ const createRoleParam = ref<CreateRoleParam>({
   roleName: ''
 })
 const handleSubmit = async () => {
-  const { data: res } = await createRoleApi(createRoleParam.value)
+  const { data: res } = await createRole(createRoleParam.value)
   if (res.code !== 0) {
     return message.error(res.msg)
   }

@@ -3,8 +3,8 @@ import { ref, watch } from 'vue'
 
 import type { UserDetailModel } from '@/api/user/models'
 
-import { getUserDetailApi, getUserRoleIdsApi } from '@/api/user/actions'
-import { searchRoleListApi } from '@/api/role/actions'
+import { getUserDetail, getUserRoleIds } from '@/api/user/actions'
+import { searchRoleList } from '@/api/role/actions'
 
 const props = defineProps({
   modalVisible: Boolean,
@@ -23,14 +23,14 @@ const userRoleIds = ref<number[]>([])
 const roleOptions = ref<Option[]>([])
 watch(props, async () => {
   if (props.modalVisible) {
-    const { data: res } = await getUserDetailApi(props.userId as number)
+    const { data: res } = await getUserDetail(props.userId as number)
     userDetail.value = res.data
-    const { data: res2 } = await searchRoleListApi()
+    const { data: res2 } = await searchRoleList()
     roleOptions.value = []
     res2.data.forEach((role) => {
       roleOptions.value.push({ label: role.roleName, value: role.id, disabled: true })
     })
-    const { data: res3 } = await getUserRoleIdsApi(props.userId as number)
+    const { data: res3 } = await getUserRoleIds(props.userId as number)
     userRoleIds.value = res3.data
   }
 })

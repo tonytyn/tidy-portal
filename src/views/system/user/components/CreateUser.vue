@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { message } from 'ant-design-vue'
 
-import { createUserApi } from '@/api/user/actions'
+import { createUser } from '@/api/user/actions'
 import type { CreateUserParam } from '@/api/user/models'
 
 defineProps({
@@ -18,7 +18,7 @@ const createUserParam = ref<CreateUserParam>({
   phone: ''
 })
 const handleSubmit = async () => {
-  const { data: res } = await createUserApi(createUserParam.value)
+  const { data: res } = await createUser(createUserParam.value)
   if (res.code !== 0) {
     return message.error(res.msg)
   }

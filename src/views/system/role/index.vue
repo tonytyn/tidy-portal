@@ -9,7 +9,7 @@ import { h, ref } from 'vue'
 
 import { UserAddOutlined } from '@ant-design/icons-vue'
 import type { RoleListModel } from '@/api/role/models'
-import { searchRoleListApi, deleteRoleApi } from '@/api/role/actions'
+import { searchRoleList, deleteRole } from '@/api/role/actions'
 import CreateRole from './components/CreateRole.vue'
 import EditRole from './components/EditRole.vue'
 import { message } from 'ant-design-vue'
@@ -41,7 +41,7 @@ const columns = [
   }
 ]
 const searchRole = async () => {
-  const { data: res } = await searchRoleListApi()
+  const { data: res } = await searchRoleList()
   roleList.value = res.data
 }
 
@@ -66,7 +66,7 @@ const handleEditModalClose = () => {
 }
 // 删除
 const handleDelete = async (roleId: number) => {
-  const { data: res } = await deleteRoleApi(roleId)
+  const { data: res } = await deleteRole(roleId)
   message.success(res.msg)
 }
 searchRole()

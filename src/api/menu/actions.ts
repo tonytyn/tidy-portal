@@ -3,9 +3,9 @@ import type { MenuListModel, MenuTreeModel } from './models'
 
 // 接口顺序：查/增/删/改（强迫症犯了）
 
-export const getMenuListApi = () => {
+export const getMenuList = () => {
   return defRequest.get<ResponseResult<MenuListModel[]>>('/menu/list')
 }
-export const getMenuTreeApi = () => {
+export const getMenuTree = () => {
   return defRequest.get<ResponseResult<MenuTreeModel[]>>('/menu/tree')
 }
