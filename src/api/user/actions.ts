@@ -1,8 +1,8 @@
 import { defRequest } from '@/utils/request'
 import type {
   SearchUserParam,
-  UserDetailResult,
-  UserListResult,
+  UserDetailModel,
+  UserListModel,
   CreateUserParam,
   UpdateUserParam
 } from './models'
@@ -11,7 +11,7 @@ import type {
 export const searchUserListApi = (searchUserParam: SearchUserParam) => {
   // 这里返回的是一个Promise，需要用await才能拿到resolve后的结果
   // 这里本想使用restFul风格的（user/username/张三）无奈mock-server接收path参数不方便，只能先这样用query传了
-  return defRequest.get<ResponseResult<PageResult<UserListResult>>>(
+  return defRequest.get<ResponseResult<PageResult<UserListModel>>>(
     '/user/list?username=' +
       searchUserParam.username +
       '&pageNum=' +
@@ -21,7 +21,7 @@ export const searchUserListApi = (searchUserParam: SearchUserParam) => {
   )
 }
 export const getUserDetailApi = (userId: number) => {
-  return defRequest.get<ResponseResult<UserDetailResult>>('/user/detail?id=' + userId)
+  return defRequest.get<ResponseResult<UserDetailModel>>('/user/detail?id=' + userId)
 }
 export const getUserRoleIdsApi = (userId: number) => {
   return defRequest.get<ResponseResult<number[]>>('/user/roles?id=' + userId)

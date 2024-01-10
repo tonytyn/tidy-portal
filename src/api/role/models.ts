@@ -1,11 +1,10 @@
-
-export interface RoleListResult {
+export interface RoleListModel {
   readonly id: number
   roleName: string
   state: string
   createdAt: string
 }
-export interface RoleDetailResult {
+export interface RoleDetailModel {
   readonly id: number
   roleName: string
   state: string

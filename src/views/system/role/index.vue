@@ -8,16 +8,15 @@ export default {
 import { h, ref } from 'vue'
 
 import { UserAddOutlined } from '@ant-design/icons-vue'
-import type { RoleListResult } from '@/api/role/models'
-import { searchRoleListApi, deleteRoleApi } from '@/api/role'
+import type { RoleListModel } from '@/api/role/models'
+import { searchRoleListApi, deleteRoleApi } from '@/api/role/actions'
 import CreateRole from './components/CreateRole.vue'
 import EditRole from './components/EditRole.vue'
 import { message } from 'ant-design-vue'
 
 // 搜索
-const roleList = ref<RoleListResult[]>([])
+const roleList = ref<RoleListModel[]>([])
 const columns = [
-  
   {
     title: '角色名称',
     dataIndex: 'roleName',

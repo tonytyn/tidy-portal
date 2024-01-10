@@ -1,10 +1,9 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { message } from 'ant-design-vue';
+import { message } from 'ant-design-vue'
 
-import { createUserApi } from '@/api/user'
+import { createUserApi } from '@/api/user/actions'
 import type { CreateUserParam } from '@/api/user/models'
-
 
 defineProps({
   modalVisible: Boolean
@@ -16,7 +15,7 @@ const createUserParam = ref<CreateUserParam>({
   username: '',
   account: '',
   password: '',
-  phone: '',
+  phone: ''
 })
 const handleSubmit = async () => {
   const { data: res } = await createUserApi(createUserParam.value)
@@ -32,12 +31,7 @@ const handleCancel = () => {
 }
 </script>
 <template>
-  <a-modal
-    :open="modalVisible"
-    title="创建用户"
-    @cancel="handleCancel"
-    :footer="null"
-  >
+  <a-modal :open="modalVisible" title="创建用户" @cancel="handleCancel" :footer="null">
     <a-form
       ref="formRef"
       :model="createUserParam"

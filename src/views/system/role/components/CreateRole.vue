@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { message } from 'ant-design-vue'
 
-import { createRoleApi } from '@/api/role'
+import { createRoleApi } from '@/api/role/actions'
 import type { CreateRoleParam } from '@/api/role/models'
 
 defineProps({

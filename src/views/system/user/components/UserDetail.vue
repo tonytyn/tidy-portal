@@ -1,17 +1,17 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
 
-import type { UserDetailResult } from '@/api/user/models'
+import type { UserDetailModel } from '@/api/user/models'
 
-import { getUserDetailApi, getUserRoleIdsApi } from '@/api/user'
-import { searchRoleListApi } from '@/api/role'
+import { getUserDetailApi, getUserRoleIdsApi } from '@/api/user/actions'
+import { searchRoleListApi } from '@/api/role/actions'
 
 const props = defineProps({
   modalVisible: Boolean,
   userId: Number
 })
 
-const userDetail = ref<UserDetailResult>({
+const userDetail = ref<UserDetailModel>({
   id: 0,
   username: '',
   account: '',

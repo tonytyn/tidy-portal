@@ -1,16 +1,15 @@
-
 export interface SearchUserParam {
   username: string
   pageNum: number
   pageSize: number
 }
-export interface UserListResult {
+export interface UserListModel {
   readonly id: number
   username: string
   account: string
   state: string
 }
-export interface UserDetailResult {
+export interface UserDetailModel {
   readonly id: number
   username: string
   account: string

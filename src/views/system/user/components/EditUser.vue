@@ -2,10 +2,15 @@
 import { ref, watch } from 'vue'
 import { message } from 'ant-design-vue'
 
-import type { UserDetailResult, UpdateUserParam } from '@/api/user/models'
+import type { UserDetailModel, UpdateUserParam } from '@/api/user/models'
 
-import { getUserDetailApi, getUserRoleIdsApi, updateUserRolesApi, updateUserApi } from '@/api/user'
-import { searchRoleListApi } from '@/api/role'
+import {
+  getUserDetailApi,
+  getUserRoleIdsApi,
+  updateUserRolesApi,
+  updateUserApi
+} from '@/api/user/actions'
+import { searchRoleListApi } from '@/api/role/actions'
 
 const props = defineProps({
   modalVisible: Boolean,
@@ -13,7 +18,7 @@ const props = defineProps({
 })
 
 const formRef = ref()
-const userDetail = ref<UserDetailResult>({
+const userDetail = ref<UserDetailModel>({
   id: 0,
   username: '',
   account: '',

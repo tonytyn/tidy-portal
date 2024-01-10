@@ -9,8 +9,8 @@ import { h, ref } from 'vue'
 // import { message } from 'ant-design-vue'
 
 import { SearchOutlined, ReloadOutlined, UserAddOutlined } from '@ant-design/icons-vue'
-import type { SearchUserParam, UserListResult } from '@/api/user/models'
-import { searchUserListApi, deleteUserApi } from '@/api/user'
+import type { SearchUserParam, UserListModel } from '@/api/user/models'
+import { searchUserListApi, deleteUserApi } from '@/api/user/actions'
 import CreateUser from './components/CreateUser.vue'
 import UserDetail from './components/UserDetail.vue'
 import EditUser from './components/EditUser.vue'
@@ -18,7 +18,7 @@ import { message } from 'ant-design-vue'
 
 // 搜索
 const searchUserParam = ref<SearchUserParam>({ username: '', pageNum: 1, pageSize: 10 })
-const userList = ref<UserListResult[]>([])
+const userList = ref<UserListModel[]>([])
 const columns = [
   {
     key: 'index',

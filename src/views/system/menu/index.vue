@@ -5,8 +5,8 @@ export default {
 </script>
 <script lang="ts" setup>
 import { ref } from 'vue'
-import type { MenuListResult } from '@/api/menu/models'
-import { getMenuListApi } from '@/api/menu'
+import type { MenuListModel } from '@/api/menu/models'
+import { getMenuListApi } from '@/api/menu/actions'
 const columns = [
   {
     title: '菜单名称',
@@ -29,7 +29,7 @@ const columns = [
     dataIndex: 'finishAt'
   }
 ]
-const menuList = ref<MenuListResult[]>([])
+const menuList = ref<MenuListModel[]>([])
 
 const initMenus = async () => {
   const { data: res } = await getMenuListApi()

@@ -2,10 +2,10 @@
 import { ref, watch } from 'vue'
 import { message } from 'ant-design-vue'
 
-import type { MenuTreeResult } from '@/api/menu/models'
-import type { RoleDetailResult, UpdateRoleParam } from '@/api/role/models'
-import { getRoleDetailApi, getRoleMenusApi, updateRoleApi } from '@/api/role'
-import { getMenuTreeApi } from '@/api/menu'
+import type { MenuTreeModel } from '@/api/menu/models'
+import type { RoleDetailModel, UpdateRoleParam } from '@/api/role/models'
+import { getRoleDetailApi, getRoleMenusApi, updateRoleApi } from '@/api/role/actions'
+import { getMenuTreeApi } from '@/api/menu/actions'
 
 const props = defineProps({
   modalVisible: Boolean,
@@ -13,7 +13,7 @@ const props = defineProps({
 })
 
 const formRef = ref()
-const roleDetail = ref<RoleDetailResult>({
+const roleDetail = ref<RoleDetailModel>({
   id: 0,
   roleName: '',
   state: '',
@@ -25,7 +25,7 @@ const updateRoleParam = ref<UpdateRoleParam>({
   state: '',
   menuIds: []
 })
-const menuTree = ref<MenuTreeResult[]>([])
+const menuTree = ref<MenuTreeModel[]>([])
 const checkedKeys = ref<number[]>([])
 const leafNodes = ref<number[]>([])
 watch(props, async () => {
@@ -43,7 +43,7 @@ watch(props, async () => {
 })
 // 回显选中的节点时要过把叶子节点过滤出来，不然该节点就会变成全选状态。
 // TODO 后续这个方法应该抽取出公共的方法来复用，定义好泛型
-const filterLeafNode = (menuTree: MenuTreeResult[], leafNodes: number[]) => {
+const filterLeafNode = (menuTree: MenuTreeModel[], leafNodes: number[]) => {
   menuTree.forEach((element) => {
     if (element?.children?.length) {
       filterLeafNode(element.children, leafNodes)
