@@ -17,7 +17,7 @@ const viewDetail = async (id: number) => {
   appDetailVisible.value = true
 }
 const enter = () => {
-  console.log('吃了吗')
+  window.open('https://antdv.com/')
 }
 const authorizedAppList = ref<AppListModel[]>([])
 const unAuthorizedAppList = ref<AppListModel[]>([])

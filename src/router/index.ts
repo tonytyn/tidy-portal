@@ -15,7 +15,7 @@ const router = createRouter({
       path: '/',
       name: 'Main',
       component: Layout,
-      redirect: '/app-center/list',
+      redirect: '/introduce',
       children: [
         {
           path: 'app-center',
@@ -69,6 +69,16 @@ const router = createRouter({
           ]
         }
       ]
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: () => import('@/views/Login.vue')
+    },
+    {
+      path: '/introduce',
+      name: 'Introduction',
+      component: () => import('@/views/Introduce.vue')
     }
   ]
 })
