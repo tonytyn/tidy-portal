@@ -9,6 +9,8 @@ import { ref, watch } from 'vue'
 import { RouterView, useRouter, type RouteRecordRaw, useRoute } from 'vue-router'
 import { message } from 'ant-design-vue'
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons-vue'
+import avatarUrl from '@/assets/avatar.jpg'
+import logoUrl from '@/assets/logo.png'
 
 
 const selectedPages = ref<string[]>([])
@@ -64,7 +66,7 @@ watch(
   <a-layout>
     <a-layout-sider v-model:collapsed="collapsed" :trigger="null" collapsible style="height: auto">
       <div class="logo-container">
-        <img src="/src/assets/logo.png" style="height: 100%" />
+        <img :src="logoUrl" style="height: 100%" />
         <span :class="collapsed ? 'title-hidden' : 'title-show'">tidy-portal</span>
       </div>
       <a-menu v-model:selectedKeys="selectedPages" theme="dark" mode="inline">
@@ -96,7 +98,7 @@ watch(
             />
           </a-col>
           <a-col>
-            <a-avatar src="/src/assets/avatar.jpg" alt="没有头像" size="large" />
+            <a-avatar :src="avatarUrl" alt="没有头像" size="large" />
           </a-col>
         </a-row>
       </a-layout-header>
