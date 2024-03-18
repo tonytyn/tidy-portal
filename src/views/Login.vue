@@ -5,6 +5,9 @@ export default {
 </script>
 <script lang="ts" setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 interface LoginParam {
   username: string
@@ -17,7 +20,8 @@ const formState = ref<LoginParam>({
 })
 
 const onFinish = (values: any) => {
-  console.log('Success:', values)
+  router.push({name:'AppList'})
+
 }
 
 const onFinishFailed = (errorInfo: any) => {
