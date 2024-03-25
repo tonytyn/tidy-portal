@@ -7,5 +7,8 @@ const locale = zhCN
 <template>
   <a-config-provider :locale="locale">
     <RouterView style="min-height: 100%" />
+    <div style="text-align: center">
+      <a href="https://beian.miit.gov.cn/" target="_blank">冀ICP备2024060140号</a>
+    </div>
   </a-config-provider>
 </template>
