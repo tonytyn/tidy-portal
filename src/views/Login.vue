@@ -2,27 +2,27 @@
   <a-layout style="min-height: 100vh">
     <a-layout-sider width="50%">
       <div class="sider-content">
-        <!-- Left Content (Image) -->
         <img :src="carUrl" alt="Login Image" class="login-image" />
       </div>
     </a-layout-sider>
     <a-layout-content>
       <div class="login-form-container">
-        <!-- Right Content (Login Form) -->
         <a-form
-          ref="loginForm"
-          :form="form"
-          @finish="handleSubmit"
+          :model="loginForm"
+          @finish="handleLogin"
           :class="{ 'login-form': true, 'login-form-finished': formFinished }"
         >
-          <a-form-item name="username">
-            <a-input v-model:value="username" placeholder="Username"></a-input>
+          <a-form-item name="account" :rules="[{ required: true }]">
+            <a-input v-model:value="loginForm.account" placeholder="账号"></a-input>
           </a-form-item>
-          <a-form-item name="password">
-            <a-input-password v-model:value="password" placeholder="Password"></a-input-password>
+          <a-form-item name="password" :rules="[{ required: true }]">
+            <a-input-password
+              v-model:value="loginForm.password"
+              placeholder="密码"
+            ></a-input-password>
           </a-form-item>
           <a-form-item>
-            <a-button type="primary" @click="handleSubmit" :loading="loading">Log in</a-button>
+            <a-button type="primary" html-type="submit" :loading="loading">Log in</a-button>
           </a-form-item>
         </a-form>
       </div>
@@ -33,28 +33,36 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { message } from 'ant-design-vue'
+
+import type { LoginParam } from '@/api/system/models'
+import { login } from '@/api/system/actions'
 import carUrl from '@/assets/login-background.jpg'
 
 const router = useRouter()
+// 定义登录参数类型，因为没有别的地方
 
-// Form Ref
-const form = ref<any>({})
+const loginForm = ref<LoginParam>({
+  account: 'test',
+  password: 'goodgood123'
+})
 
-// Form State
 const formFinished = ref(false)
-const username = ref('')
-const password = ref('')
 const loading = ref(false)
 
-// Form Submission
-const handleSubmit = () => {
+const handleLogin = async () => {
   loading.value = true
-  setTimeout(() => {
+  const { data: res } = await login(loginForm.value)
+  if (res.code !== 0) {
     loading.value = false
-    formFinished.value = true // Assume login is successful for demo purpose
-    router.push({name:'AppList'})
-    // Redirect or perform necessary actions upon successful login
-  }, 2000) // Simulating API request delay
+    return message.error(res.msg)
+  }
+
+  loading.value = false
+  formFinished.value = true 
+  router.push({ name: 'AppList' })
+
+  
 }
 </script>
 
@@ -76,7 +84,6 @@ const handleSubmit = () => {
   align-items: center;
   justify-content: center;
   height: 100%;
-  /* Add box shadow to create hover effect */
   transition: box-shadow 0.3s ease;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Initial box shadow */
 }
