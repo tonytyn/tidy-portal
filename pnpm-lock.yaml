@@ -8,6 +8,9 @@ dependencies:
   '@ant-design/icons-vue':
     specifier: ^6.1.0
     version: 6.1.0(vue@3.3.4)
+  '@types/nprogress':
+    specifier: ^0.2.3
+    version: 0.2.3
   ant-design-vue:
     specifier: ^4.0.8
     version: 4.0.8(vue@3.3.4)
@@ -17,6 +20,9 @@ dependencies:
   mockjs:
     specifier: ^1.1.0
     version: 1.1.0
+  nprogress:
+    specifier: ^0.2.0
+    version: 0.2.0
   vue:
     specifier: ^3.3.4
     version: 3.3.4
@@ -523,6 +529,10 @@ packages:
   /@types/node@18.16.17:
     resolution: {integrity: sha512-QAkjjRA1N7gPJeAP4WLXZtYv6+eMXFNviqktCDt4GLcmCugMr5BcRHfkOjCQzvCsnMp+L79a54zBkbw356xv9Q==}
     dev: true
+
+  /@types/nprogress@0.2.3:
+    resolution: {integrity: sha512-k7kRA033QNtC+gLc4VPlfnue58CM1iQLgn1IMAU8VPHGOj7oIHPp9UlhedEnD/Gl8evoCjwkZjlBORtZ3JByUA==}
+    dev: false
 
   /@types/semver@7.5.0:
     resolution: {integrity: sha512-G8hZ6XJiHnuhQKR7ZmysCeJWE08o8T0AXtk5darsCaTVsYZhhgUrq53jizaR2FvsoeCwJhlmwTjkXBY5Pn/ZHw==}
@@ -2637,6 +2647,10 @@ packages:
       shell-quote: 1.8.1
       string.prototype.padend: 3.1.4
     dev: true
+
+  /nprogress@0.2.0:
+    resolution: {integrity: sha512-I19aIingLgR1fmhftnbWWO3dXc0hSxqHQHQb3H8m+K3TnEn/iSeTZZOyvKXWqQESMwuUVnatlCnZdLBZZt2VSA==}
+    dev: false
 
   /nth-check@2.1.1:
     resolution: {integrity: sha512-lqjrjmaOoAnWfMmBPL+XNnynZh2+swxiX3WUE0s4yEHI6m+AwrK2UZOimIRl3X/4QctVqS8AiZjFqyOGrMXb/w==}

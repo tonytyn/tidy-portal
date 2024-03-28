@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
+import { close, start } from '@/utils/nprogress'
+
 import { AppstoreAddOutlined, CodeOutlined, SettingOutlined } from '@ant-design/icons-vue'
 
 import Layout from '@/layout/index.vue'
@@ -81,6 +83,14 @@ const router = createRouter({
       component: () => import('@/views/Introduce.vue')
     }
   ]
+})
+
+router.beforeEach(() => {
+  start()
+})
+
+router.afterEach(() => {
+  close()
 })
 
 export default router
